@@ -2648,7 +2648,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					ValidationContextType: &tls.CommonTlsContext_CombinedValidationContext{
@@ -2705,7 +2705,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					ValidationContextType: &tls.CommonTlsContext_CombinedValidationContext{
@@ -2761,7 +2761,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					ValidationContextType: &tls.CommonTlsContext_ValidationContext{},
@@ -2792,7 +2792,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					ValidationContextType: &tls.CommonTlsContext_ValidationContext{},
@@ -2825,7 +2825,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 				},
@@ -2858,7 +2858,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
@@ -2939,7 +2939,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
@@ -3019,7 +3019,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
@@ -3074,7 +3074,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
@@ -3129,7 +3129,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
@@ -3171,7 +3171,7 @@ func TestInsecureSkipVerify(t *testing.T) {
 				CommonTlsContext: &tls.CommonTlsContext{
 					TlsParams: &tls.TlsParameters{
 						// if not specified, envoy use TLSv1_2 as default for client.
-						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+						TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 						TlsMinimumProtocolVersion: tls.TlsParameters_TLSv1_2,
 					},
 					TlsCertificateSdsSecretConfigs: []*tls.SdsSecretConfig{
