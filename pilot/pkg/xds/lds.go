@@ -90,6 +90,7 @@ func ldsNeedsPush(proxy *model.Proxy, req *model.PushRequest) bool {
 }
 
 func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req *model.PushRequest) (model.Resources, model.XdsLogDetails, error) {
+	log.Debugf("ldsGenerator Called")
 	if !ldsNeedsPush(proxy, req) {
 		return nil, model.DefaultXdsLogDetails, nil
 	}

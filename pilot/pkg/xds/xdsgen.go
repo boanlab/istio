@@ -65,17 +65,23 @@ func ControlPlane() *core.ControlPlane {
 }
 
 func (s *DiscoveryServer) findGenerator(typeURL string, con *Connection) model.XdsResourceGenerator {
+	log.Debugf("findGenerator() : typeURL %s", typeURL)
+
 	if g, f := s.Generators[con.proxy.Metadata.Generator+"/"+typeURL]; f {
+		log.Debugf("Generator : %s", con.proxy.Metadata.Generator+"/"+typeURL)
 		return g
 	}
+
 	if g, f := s.Generators[string(con.proxy.Type)+"/"+typeURL]; f {
+		log.Debugf("Generator : %s", string(con.proxy.Type)+"/"+typeURL)
 		return g
 	}
 
 	if g, f := s.Generators[typeURL]; f {
+		log.Debugf("Generator : %s", typeURL)
 		return g
 	}
-
+	log.Debugf("Default Generator Used")
 	// XdsResourceGenerator is the default generator for this connection. We want to allow
 	// some types to use custom generators - for example EDS.
 	g := con.proxy.XdsResourceGenerator
@@ -117,7 +123,10 @@ func (s *DiscoveryServer) pushXds(con *Connection, w *model.WatchedResource, req
 			ResourceNames: req.Delta.Subscribed.UnsortedList(),
 		}
 	}
+
+	// 해당 부분의 Generate 함수는 인터페이스 함수로, 실제 객체가 뭔지 알아야 함
 	res, logdata, err := gen.Generate(con.proxy, w, req)
+	log.Debugf("forced print logdata variable : %s", logdata)
 	info := ""
 	if len(logdata.AdditionalInfo) > 0 {
 		info = " " + logdata.AdditionalInfo
