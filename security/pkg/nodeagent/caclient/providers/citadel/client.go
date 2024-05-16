@@ -112,6 +112,7 @@ func (c *CitadelClient) CSRSign(csrPEM []byte, certValidTTLInSec int64) (res []s
 	}
 
 	ctx := metadata.NewOutgoingContext(context.Background(), metadata.Pairs("ClusterID", c.opts.ClusterID))
+	log.Debugf("CreateCertificate Args : ctx = %+v, req = %+v", ctx, req)
 	resp, err := c.client.CreateCertificate(ctx, req)
 	if err != nil {
 		return nil, fmt.Errorf("create certificate: %v", err)
@@ -120,7 +121,7 @@ func (c *CitadelClient) CSRSign(csrPEM []byte, certValidTTLInSec int64) (res []s
 	if len(resp.CertChain) <= 1 {
 		return nil, errors.New("invalid empty CertChain")
 	}
-
+	log.Debugf("resq.CertChain: %+v", resp.CertChain)
 	return resp.CertChain, nil
 }
 
