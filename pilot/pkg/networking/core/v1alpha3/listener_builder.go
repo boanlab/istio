@@ -15,6 +15,7 @@
 package v1alpha3
 
 import (
+	"encoding/json"
 	"time"
 
 	accesslog "github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3"
@@ -215,7 +216,11 @@ func (lb *ListenerBuilder) getListeners() []*listener.Listener {
 		nVirtual,
 	)
 
-	log.Debugf("Listener: %+v", listeners)
+	log.Infof("Listener: %+v", listeners)
+	jsonData, err := json.Marshal(listeners)
+	if err != nil {
+		log.Infof("Listener: %s", string(jsonData))
+	}
 
 	return listeners
 }

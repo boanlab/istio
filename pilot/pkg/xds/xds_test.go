@@ -186,6 +186,7 @@ func TestServiceScoping(t *testing.T) {
 				Resolution:         "STATIC",
 			},
 		})
+
 		proxy := s.SetupProxy(baseProxy())
 
 		endpoints := xdstest.ExtractLoadAssignments(s.Endpoints(proxy))
