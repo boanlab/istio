@@ -95,6 +95,7 @@ func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req
 		log.Debugf("catch if ldsGenerator")
 		return nil, model.DefaultXdsLogDetails, nil
 	}
+	log.Debugf("catch if not catch ldsGenerator")
 	listeners := l.Server.ConfigGenerator.BuildListeners(proxy, req.Push)
 	resources := model.Resources{}
 	for _, c := range listeners {
