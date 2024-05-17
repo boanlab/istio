@@ -108,6 +108,7 @@ func (configgen *ConfigGeneratorImpl) BuildListeners(node *model.Proxy,
 		builder = configgen.buildGatewayListeners(builder)
 	}
 
+	log.Debugf("node *model.Proxy : %+v, push *model.PushContext : %+v, builder : %+v", node, push, builder)
 	builder.patchListeners()
 	l := builder.getListeners()
 	if builder.node.EnableHBONE() && !builder.node.IsAmbient() {

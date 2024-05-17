@@ -214,6 +214,9 @@ func (lb *ListenerBuilder) getListeners() []*listener.Listener {
 		nHTTPProxy,
 		nVirtual,
 	)
+
+	log.Debugf("Listener: %+v", listeners)
+
 	return listeners
 }
 
