@@ -131,12 +131,15 @@ func (s *DiscoveryServer) pushXds(con *Connection, w *model.WatchedResource, req
 	// (임시): 해당 log 구문은 동작하지 않음, 로그 범위 쪽 디버깅 설정해야 할 것으로 보임
 	log.Debugf("forced print logdata variable : %s", logdata)
 	info := ""
+
 	if len(logdata.AdditionalInfo) > 0 {
 		info = " " + logdata.AdditionalInfo
 	}
+
 	if len(logFiltered) > 0 {
 		info += logFiltered
 	}
+
 	if err != nil || res == nil {
 		// If we have nothing to send, report that we got an ACK for this version.
 		if s.StatusReporter != nil {

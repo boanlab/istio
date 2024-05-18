@@ -152,6 +152,7 @@ func (s *DiscoveryServer) StreamDeltas(stream DeltaDiscoveryStream) error {
 // Compute and send the new configuration for a connection. This is blocking and may be slow
 // for large configs. The method will hold a lock on con.pushMutex.
 func (s *DiscoveryServer) pushConnectionDelta(con *Connection, pushEv *Event) error {
+	log.Info("PushConnectionDelta Called")
 	pushRequest := pushEv.pushRequest
 
 	if pushRequest.Full {

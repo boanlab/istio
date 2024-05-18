@@ -546,10 +546,12 @@ func (p *XdsProxy) handleUpstreamResponse(con *ProxyConnection) {
 				if strings.HasPrefix(resp.TypeUrl, v3.DebugType) {
 					p.forwardToTap(resp)
 				} else {
+					proxyLog.Info("Case 1 proxy-agent")
 					forwardToEnvoy(con, resp)
 				}
 			}
 		case resp := <-forwardEnvoyCh:
+			proxyLog.Info("Case 2 proxy-agent")
 			forwardToEnvoy(con, resp)
 		case <-con.stopChan:
 			return
