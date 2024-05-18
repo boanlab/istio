@@ -123,10 +123,11 @@ func (s *DiscoveryServer) pushXds(con *Connection, w *model.WatchedResource, req
 			ResourceNames: req.Delta.Subscribed.UnsortedList(),
 		}
 	}
-
+	log.Infof("Before Generate")
+	log.Infof("Log generate parameter %+v", con.proxy)
 	// (임시): 해당 부분의 Generate 함수는 인터페이스 함수로, 실제 객체가 뭔지 알아야 함
 	res, logdata, err := gen.Generate(con.proxy, w, req)
-
+	log.Infof("Before Generate")
 	// (임시): 해당 log 구문은 동작하지 않음, 로그 범위 쪽 디버깅 설정해야 할 것으로 보임
 	log.Debugf("forced print logdata variable : %s", logdata)
 	info := ""
