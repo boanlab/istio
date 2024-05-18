@@ -21,7 +21,6 @@ import (
 	"istio.io/istio/pilot/pkg/util/protoconv"
 	"istio.io/istio/pkg/config/schema/kind"
 	"istio.io/istio/pkg/util/sets"
-	golog "log"
 )
 
 type LdsGenerator struct {
@@ -93,22 +92,20 @@ func ldsNeedsPush(proxy *model.Proxy, req *model.PushRequest) bool {
 func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req *model.PushRequest) (model.Resources, model.XdsLogDetails, error) {
 	log.Debugf("ldsGenerator Called")
 	log.Debugf("before if statement")
-	golog.Printf("is this printed out?\n\n\n")
 	if !ldsNeedsPush(proxy, req) {
-		golog.Printf("is this printed out?\n\n\n")
 		log.Debugf("catch if ldsGenerator")
 		return nil, model.DefaultXdsLogDetails, nil
 	}
-	golog.Printf("is this printed out?\n\n\n")
-	log.Debugf("catch if not catch ldsGenerator")
+
 	listeners := l.Server.ConfigGenerator.BuildListeners(proxy, req.Push)
 	resources := model.Resources{}
 	for _, c := range listeners {
-		log.Debugf("Loop argument: %+v", c)
+		log.Infof("Loop argument: %+v", c)
 		resources = append(resources, &discovery.Resource{
 			Name:     c.Name,
 			Resource: protoconv.MessageToAny(c),
 		})
+		log.Infof("resource %+v", resources)
 	}
 	log.Debugf("ldsGenerator.Generate: %+v, %+v", resources, model.DefaultXdsLogDetails)
 	return resources, model.DefaultXdsLogDetails, nil

@@ -546,6 +546,7 @@ func (p *XdsProxy) handleUpstreamResponse(con *ProxyConnection) {
 				if strings.HasPrefix(resp.TypeUrl, v3.DebugType) {
 					p.forwardToTap(resp)
 				} else {
+					// 대부분의 상황에서 해당 케이스로 적용되는 것으로 판단
 					proxyLog.Info("Case 1 proxy-agent")
 					forwardToEnvoy(con, resp)
 				}
