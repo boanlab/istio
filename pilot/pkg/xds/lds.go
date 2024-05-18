@@ -97,15 +97,16 @@ func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req
 		return nil, model.DefaultXdsLogDetails, nil
 	}
 
+	log.Infof("Proxy Info %+v, ", proxy)
+	log.Infof("PushReq %+v", req)
+
 	listeners := l.Server.ConfigGenerator.BuildListeners(proxy, req.Push)
 	resources := model.Resources{}
 	for _, c := range listeners {
-		log.Infof("Loop argument: %+v", c)
 		resources = append(resources, &discovery.Resource{
 			Name:     c.Name,
 			Resource: protoconv.MessageToAny(c),
 		})
-		log.Infof("resource %+v", resources)
 	}
 	log.Debugf("ldsGenerator.Generate: %+v, %+v", resources, model.DefaultXdsLogDetails)
 	return resources, model.DefaultXdsLogDetails, nil
