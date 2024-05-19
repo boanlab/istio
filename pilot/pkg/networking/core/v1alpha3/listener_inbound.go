@@ -300,14 +300,14 @@ func (lb *ListenerBuilder) inboundChainForOpts(cc inboundChainConfig, mtls authn
 			chains = append(chains, &listener.FilterChain{
 				FilterChainMatch: cc.ToFilterChainMatch(opt),
 				Filters:          lb.buildInboundNetworkFiltersForHTTP(cc),
-				TransportSocket:  buildDownstreamTLSTransportSocket(opt.ToTransportSocket(mtls)),
+				TransportSocket:  buildDownstreamTLSTransportSocket_Alt(lb.node, opt.ToTransportSocket(mtls)),
 				Name:             cc.Name(opt.Protocol),
 			})
 		case istionetworking.ListenerProtocolTCP:
 			chains = append(chains, &listener.FilterChain{
 				FilterChainMatch: cc.ToFilterChainMatch(opt),
 				Filters:          lb.buildInboundNetworkFilters(cc),
-				TransportSocket:  buildDownstreamTLSTransportSocket(opt.ToTransportSocket(mtls)),
+				TransportSocket:  buildDownstreamTLSTransportSocket_Alt(lb.node, opt.ToTransportSocket(mtls)),
 				Name:             cc.Name(opt.Protocol),
 			})
 		}
