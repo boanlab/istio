@@ -407,7 +407,9 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 			return nil
 		}
 		chainsByPort = lb.getFilterChainsByServicePort(chainsByPort, false)
+
 	} else {
+		// else 쪽으로 처리가 입력되는 것은 아님
 		log.Infof("buildInboundChainConfigs : flow 4")
 		// only allow to merge inbound listeners if sidecar has ingress listener pilot has env EnableSidecarServiceInboundListenerMerge set
 		if features.EnableSidecarServiceInboundListenerMerge {
@@ -493,7 +495,7 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 	sort.Slice(chainConfigs, func(i, j int) bool {
 		return chainConfigs[i].port.TargetPort < chainConfigs[j].port.TargetPort
 	})
-
+	log.Infof("buildInboundChainConfigs : %+v", chainConfigs)
 	return chainConfigs
 }
 
