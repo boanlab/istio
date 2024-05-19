@@ -147,9 +147,11 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 	// this function doesn't validate ciphersuites, if it needs, then use FilterCiphersuites()
 	var ret []string
 	if cipherSuitesFromPodAnnos != nil {
+		log.Infof("ret = podAnnos")
 		ret = cipherSuitesFromPodAnnos
 	}
 	if ciphersuitesFromNSAnnos != nil {
+		log.Infof("ret = NSAnnos")
 		ret = ciphersuitesFromNSAnnos
 	}
 
