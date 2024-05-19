@@ -99,7 +99,6 @@ func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req
 
 	// proxy Info에 Pod ID에 Pod name과 namespace 존재
 	// annotation 정보까지 함께 포함됨
-	log.Infof("Proxy Info %+v, ", proxy)
 
 	listeners := l.Server.ConfigGenerator.BuildListeners(proxy, req.Push)
 	resources := model.Resources{}
@@ -109,6 +108,6 @@ func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req
 			Resource: protoconv.MessageToAny(c),
 		})
 	}
-	log.Debugf("ldsGenerator.Generate: %+v, %+v", resources, model.DefaultXdsLogDetails)
+
 	return resources, model.DefaultXdsLogDetails, nil
 }

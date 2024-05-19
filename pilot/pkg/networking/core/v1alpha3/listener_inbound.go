@@ -317,6 +317,7 @@ func (lb *ListenerBuilder) inboundChainForOpts(cc inboundChainConfig, mtls authn
 				Name:             cc.Name(opt.Protocol),
 			})
 		}
+		log.Infof("inboundChainForOpts : return %+v", chains)
 	}
 	return chains
 }
