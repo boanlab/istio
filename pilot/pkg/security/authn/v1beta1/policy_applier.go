@@ -17,11 +17,14 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"strings"
 
+=======
+>>>>>>> f79ee89c4d93409f921a35101e7c1b5f0d1a51eb
 	core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	route "github.com/envoyproxy/go-control-plane/envoy/config/route/v3"
 	envoy_jwt "github.com/envoyproxy/go-control-plane/envoy/extensions/filters/http/jwt_authn/v3"
@@ -174,6 +177,7 @@ func (a v1beta1PolicyApplier) AuthNFilter(forSidecar bool) *hcm.HttpFilter {
 	}
 }
 
+// this function overrides ciphersuites information with pods' and namespaces' annotations
 func (a v1beta1PolicyApplier) InboundMTLSSettings(
 	endpointPort uint32,
 	node *model.Proxy,
@@ -193,6 +197,8 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 	// This is used to configure TLS version for inbound filter chain of ISTIO MUTUAL cases.
 	// For MUTUAL and SIMPLE TLS modes specified via ServerTLSSettings in Sidecar or Gateway,
 	// TLS version is configured in the BuildListenerContext.
+	//
+	// Internally, Annotation Ciphersuites Overriding triggered in BuildInboundTLS function when pods or namespace have ciphersuites annotations
 	minTLSVersion := authn_utils.GetMinTLSVersion(mc.GetMeshMTLS().GetMinProtocolVersion())
 	ret := authn.MTLSSettings{
 		Port: endpointPort,
@@ -202,6 +208,7 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 		HTTP: authn_utils.BuildInboundTLS(effectiveMTLSMode, node, networking.ListenerProtocolHTTP,
 			trustDomainAliases, minTLSVersion, mc),
 	}
+<<<<<<< HEAD
 
 	// Configure the ciphersuites from pod annotation by querying to k8s API Server
 	k8sConfig, err := rest.InClusterConfig()
@@ -233,6 +240,8 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 	ret.TCP.CommonTlsContext.TlsParams.CipherSuites = ciphersuitesFromAnnos
 	log.Infof("After Overide : %+v", ret.TCP.CommonTlsContext.TlsParams.CipherSuites)
 	authnLog.Infof("InboundMTLSSettings return : %+v", ret)
+=======
+>>>>>>> f79ee89c4d93409f921a35101e7c1b5f0d1a51eb
 	return ret
 }
 
