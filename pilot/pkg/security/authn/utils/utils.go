@@ -123,20 +123,30 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 	namespaceName := parsedPodID[1]
 
 	pod, err := clientset.CoreV1().Pods(namespaceName).Get(context.TODO(), podName, metav1.GetOptions{})
+	namespace, err := clientset.CoreV1().Namespaces().Get(context.TODO(), namespaceName, metav1.GetOptions{})
 	// annotation can contain ciphersuites at once
 	// if you consider to use multiple ciphersuites, then special format (json, concatenated strings) would be needed
 	var cipherSuitesFromPodAnnos []string
+	var ciphersuitesFromNSAnnos []string
 	for key, values := range pod.Annotations {
 		if key == "cipherSuites" {
 			cipherSuitesFromPodAnnos = append(cipherSuitesFromPodAnnos, values)
 		}
 		log.Infof("%s, %s", key, values)
 	}
+	for key, values := range namespace.Annotations {
+		if key == "cipherSuites" {
+			ciphersuitesFromNSAnnos = append(ciphersuitesFromNSAnnos, values)
+		}
+	}
 
 	// this function doesn't validate ciphersuites, if it needs, then use FilterCiphersuites()
 	var ret []string
 	if cipherSuitesFromPodAnnos != nil {
 		ret = cipherSuitesFromPodAnnos
+	}
+	if ciphersuitesFromNSAnnos != nil {
+		ret = ciphersuitesFromNSAnnos
 	}
 
 	return ret, err
