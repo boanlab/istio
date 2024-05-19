@@ -1372,6 +1372,8 @@ func buildDownstreamTLSTransportSocket_Alt(node *model.Proxy, tlsContext *auth.D
 		Name:       wellknown.TransportSocketTLS,
 		ConfigType: &core.TransportSocket_TypedConfig{TypedConfig: protoconv.MessageToAny(tlsContext)},
 	}
+	log.Infof("tlsContext : %+v", tlsContext)
+	log.Infof("transportConfig : %+v", transportConfig)
 
 	k8sConfig, err := rest.InClusterConfig()
 
@@ -1392,7 +1394,7 @@ func buildDownstreamTLSTransportSocket_Alt(node *model.Proxy, tlsContext *auth.D
 	pod, err := clientset.CoreV1().Pods(namespace).Get(context.TODO(), podName, metav1.GetOptions{})
 
 	for key, values := range pod.Annotations {
-		log.Infof("%s, %s\n", key, values)
+		log.Infof("%s, %s", key, values)
 	}
 
 	return transportConfig
