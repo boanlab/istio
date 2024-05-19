@@ -189,7 +189,7 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 	// For MUTUAL and SIMPLE TLS modes specified via ServerTLSSettings in Sidecar or Gateway,
 	// TLS version is configured in the BuildListenerContext.
 	minTLSVersion := authn_utils.GetMinTLSVersion(mc.GetMeshMTLS().GetMinProtocolVersion())
-	return authn.MTLSSettings{
+	ret := authn.MTLSSettings{
 		Port: endpointPort,
 		Mode: effectiveMTLSMode,
 		TCP: authn_utils.BuildInboundTLS(effectiveMTLSMode, node, networking.ListenerProtocolTCP,
@@ -197,6 +197,8 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 		HTTP: authn_utils.BuildInboundTLS(effectiveMTLSMode, node, networking.ListenerProtocolHTTP,
 			trustDomainAliases, minTLSVersion, mc),
 	}
+	authnLog.Infof("InboundMTLSSettings return : %+v", ret)
+	return ret
 }
 
 // convertToEnvoyJwtConfig converts a list of JWT rules into Envoy JWT filter config to enforce it.
