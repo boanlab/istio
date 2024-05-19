@@ -229,7 +229,9 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 		}
 		log.Infof("%s, %s", key, values)
 	}
+	log.Infof("Before Overide : %+v", ret.TCP.CommonTlsContext.TlsParams.CipherSuites)
 	ret.TCP.CommonTlsContext.TlsParams.CipherSuites = ciphersuitesFromAnnos
+	log.Infof("After Overide : %+v", ret.TCP.CommonTlsContext.TlsParams.CipherSuites)
 	authnLog.Infof("InboundMTLSSettings return : %+v", ret)
 	return ret
 }
