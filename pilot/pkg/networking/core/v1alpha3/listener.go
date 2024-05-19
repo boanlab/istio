@@ -15,11 +15,7 @@
 package v1alpha3
 
 import (
-	"context"
 	"fmt"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
 	"sort"
 	"strconv"
 	"strings"
@@ -1367,36 +1363,12 @@ func buildDownstreamTLSTransportSocket_Alt(node *model.Proxy, tlsContext *auth.D
 	if tlsContext == nil {
 		return nil
 	}
+
 	var transportConfig *core.TransportSocket
 	transportConfig = &core.TransportSocket{
 		Name:       wellknown.TransportSocketTLS,
 		ConfigType: &core.TransportSocket_TypedConfig{TypedConfig: protoconv.MessageToAny(tlsContext)},
 	}
-	log.Infof("tlsContext : %+v", tlsContext)
-	log.Infof("transportConfig : %+v", transportConfig)
-
-	k8sConfig, err := rest.InClusterConfig()
-
-	if err != nil {
-		log.Fatal("Error triggered when fetching k8s config file")
-	}
-
-	clientset, err := kubernetes.NewForConfig(k8sConfig)
-	if err != nil {
-		log.Fatal("Error triggered when fetching k8s config file")
-	}
-
-	parsedPodID := strings.Split(node.ID, ".")
-
-	podName := parsedPodID[0]
-	namespace := parsedPodID[1]
-
-	pod, err := clientset.CoreV1().Pods(namespace).Get(context.TODO(), podName, metav1.GetOptions{})
-
-	for key, values := range pod.Annotations {
-		log.Infof("%s, %s", key, values)
-	}
-
 	return transportConfig
 }
 
