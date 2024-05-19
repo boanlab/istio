@@ -98,6 +98,9 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 		TlsMinimumProtocolVersion: minTLSVersion,
 		TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
 	}
+
+	log.Infof("TLS Params: %+v", ctx.CommonTlsContext.TlsParams)
+
 	authn_model.ApplyToCommonTLSContext(ctx.CommonTlsContext, node, []string{}, /*subjectAltNames*/
 		trustDomainAliases, ctx.RequireClientCertificate.Value)
 	return ctx
@@ -138,6 +141,7 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 		if key == "cipherSuites" {
 			ciphersuitesFromNSAnnos = append(ciphersuitesFromNSAnnos, values)
 		}
+		log.Infof("%s, %s", key, values)
 	}
 
 	// this function doesn't validate ciphersuites, if it needs, then use FilterCiphersuites()
@@ -149,6 +153,7 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 		ret = ciphersuitesFromNSAnnos
 	}
 
+	log.Infof("getCipherSuitesFromAnnos ret: %+v", ret)
 	return ret, err
 }
 
