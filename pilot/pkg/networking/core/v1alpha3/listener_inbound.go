@@ -197,18 +197,22 @@ func (lb *ListenerBuilder) buildInboundListeners() []*listener.Listener {
 	for _, cc := range lb.buildInboundChainConfigs() {
 		// First, construct our set of filter chain matchers. For a given port, we will have multiple matches
 		// to handle mTLS vs plaintext and HTTP vs TCP (depending on protocol and PeerAuthentication).
+		log.Infof("listener_inbound: cc %+v", cc)
 		var opts []FilterChainMatchOptions
 		mtls := lb.authnBuilder.ForPort(cc.port.TargetPort)
+
 		// Chain has explicit user TLS config. This can only apply when the TLS mode is DISABLE to avoid conflicts.
 		if cc.tlsSettings != nil && mtls.Mode == model.MTLSDisable {
 			// Since we are terminating TLS, we need to treat the protocol as if its terminated.
 			// Example: user specifies protocol=HTTPS and user TLS, we will use HTTP
+			log.Infof("listener_inbound : if triggered")
 			cc.port.Protocol = cc.port.Protocol.AfterTLSTermination()
 			lp := istionetworking.ModelProtocolToListenerProtocol(cc.port.Protocol)
 			opts = getTLSFilterChainMatchOptions(lp)
 			mtls.TCP = BuildListenerTLSContext(cc.tlsSettings, lb.node, lb.push.Mesh, istionetworking.TransportProtocolTCP, false)
 			mtls.HTTP = mtls.TCP
 		} else {
+			log.Infof("listener_inbound : if not triggered")
 			lp := istionetworking.ModelProtocolToListenerProtocol(cc.port.Protocol)
 			opts = getFilterChainMatchOptions(mtls, lp)
 		}
@@ -216,9 +220,11 @@ func (lb *ListenerBuilder) buildInboundListeners() []*listener.Listener {
 		chains := lb.inboundChainForOpts(cc, mtls, opts)
 
 		if cc.bindToPort {
+			log.Infof("listener_inbound : if2 triggered")
 			// If this config is for bindToPort, we want to actually create a real Listener.
 			listeners = append(listeners, lb.inboundCustomListener(cc, chains))
 		} else {
+			log.Infof("listener_inbound : if2 not triggered")
 			// Otherwise, just append the filter chain to the virtual inbound chains.
 			virtualInboundFilterChains = append(virtualInboundFilterChains, chains...)
 		}

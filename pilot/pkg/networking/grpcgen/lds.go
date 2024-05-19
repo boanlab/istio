@@ -61,7 +61,7 @@ const (
 func (g *GrpcConfigGenerator) BuildListeners(node *model.Proxy, push *model.PushContext, names []string) model.Resources {
 	filter := newListenerNameFilter(names, node)
 
-	log.Debugf("building lds for %s with filter:\n%v", node.ID, filter)
+	log.Infof("building lds for %s with filter:\n%v", node.ID, filter)
 
 	resp := make(model.Resources, 0, len(filter))
 	resp = append(resp, buildOutboundListeners(node, push, filter)...)
@@ -345,6 +345,7 @@ func buildOutboundListeners(node *model.Proxy, push *model.PushContext, filter l
 			}
 		}
 	}
+
 	return out
 }
 

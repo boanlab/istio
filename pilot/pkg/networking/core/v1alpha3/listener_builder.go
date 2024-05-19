@@ -46,7 +46,6 @@ import (
 	"istio.io/istio/pkg/log"
 	"istio.io/istio/pkg/proto"
 	"istio.io/istio/pkg/wellknown"
-	
 )
 
 // A stateful listener builder
@@ -92,6 +91,7 @@ func NewListenerBuilder(node *model.Proxy, push *model.PushContext) *ListenerBui
 }
 
 func (lb *ListenerBuilder) appendSidecarInboundListeners() *ListenerBuilder {
+
 	lb.inboundListeners = lb.buildInboundListeners()
 	if lb.node.EnableHBONE() {
 		lb.inboundListeners = append(lb.inboundListeners, lb.buildInboundHBONEListeners()...)

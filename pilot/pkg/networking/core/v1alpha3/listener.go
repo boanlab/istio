@@ -97,6 +97,7 @@ var (
 func (configgen *ConfigGeneratorImpl) BuildListeners(node *model.Proxy,
 	push *model.PushContext,
 ) []*listener.Listener {
+	// builder에 이미 정보가 내장되어 있음
 	builder := NewListenerBuilder(node, push)
 
 	switch node.Type {
@@ -176,6 +177,7 @@ func BuildListenerTLSContext(serverTLSSettings *networking.ServerTLSSettings,
 
 	if isSimpleOrMutual(serverTLSSettings.Mode) {
 		// If Mesh TLSDefaults are set, use them.
+		// 이 부분은 어떻게 동작하는지 의심스러움
 		applyDownstreamTLSDefaults(mesh.GetTlsDefaults(), ctx.CommonTlsContext)
 		applyServerTLSSettings(serverTLSSettings, ctx.CommonTlsContext)
 	}
