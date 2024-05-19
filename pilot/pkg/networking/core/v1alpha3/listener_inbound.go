@@ -467,7 +467,8 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 				log.Infof("Security.FilterCipherSuites %+v", cc.tlsSettings.CipherSuites)
 				cc.port.Protocol = cc.port.Protocol.AfterTLSTermination()
 			}
-
+			log.Infof("trigger : TLS Configuration")
+			log.Infof("Security.FilterCipherSuites %+v", cc.tlsSettings.CipherSuites)
 			chainsByPort[port.TargetPort] = cc
 		}
 	}
