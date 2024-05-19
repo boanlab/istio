@@ -462,7 +462,9 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 			if i.Tls != nil && features.EnableTLSOnSidecarIngress {
 				// User provided custom TLS settings
 				cc.tlsSettings = i.Tls.DeepCopy()
+				log.Infof("trigger : TLS Configuration if statement")
 				cc.tlsSettings.CipherSuites = security.FilterCipherSuites(cc.tlsSettings.CipherSuites)
+				log.Infof("Security.FilterCipherSuites %+v", cc.tlsSettings.CipherSuites)
 				cc.port.Protocol = cc.port.Protocol.AfterTLSTermination()
 			}
 
