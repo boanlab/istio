@@ -15,7 +15,16 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
+<<<<<<< HEAD
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"strings"
+
+=======
+>>>>>>> f79ee89c4d93409f921a35101e7c1b5f0d1a51eb
 	core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	route "github.com/envoyproxy/go-control-plane/envoy/config/route/v3"
 	envoy_jwt "github.com/envoyproxy/go-control-plane/envoy/extensions/filters/http/jwt_authn/v3"
@@ -199,6 +208,40 @@ func (a v1beta1PolicyApplier) InboundMTLSSettings(
 		HTTP: authn_utils.BuildInboundTLS(effectiveMTLSMode, node, networking.ListenerProtocolHTTP,
 			trustDomainAliases, minTLSVersion, mc),
 	}
+<<<<<<< HEAD
+
+	// Configure the ciphersuites from pod annotation by querying to k8s API Server
+	k8sConfig, err := rest.InClusterConfig()
+
+	if err != nil {
+		log.Fatal("Error triggered when fetching k8s config file")
+	}
+
+	clientset, err := kubernetes.NewForConfig(k8sConfig)
+	if err != nil {
+		log.Fatal("Error triggered when fetching k8s config file")
+	}
+
+	parsedPodID := strings.Split(node.ID, ".")
+
+	podName := parsedPodID[0]
+	namespace := parsedPodID[1]
+
+	pod, err := clientset.CoreV1().Pods(namespace).Get(context.TODO(), podName, metav1.GetOptions{})
+
+	var ciphersuitesFromAnnos []string
+	for key, values := range pod.Annotations {
+		if key == "ciphersuites" {
+			ciphersuitesFromAnnos = append(ciphersuitesFromAnnos, values)
+		}
+		log.Infof("%s, %s", key, values)
+	}
+	log.Infof("Before Overide : %+v", ret.TCP.CommonTlsContext.TlsParams.CipherSuites)
+	ret.TCP.CommonTlsContext.TlsParams.CipherSuites = ciphersuitesFromAnnos
+	log.Infof("After Overide : %+v", ret.TCP.CommonTlsContext.TlsParams.CipherSuites)
+	authnLog.Infof("InboundMTLSSettings return : %+v", ret)
+=======
+>>>>>>> f79ee89c4d93409f921a35101e7c1b5f0d1a51eb
 	return ret
 }
 
