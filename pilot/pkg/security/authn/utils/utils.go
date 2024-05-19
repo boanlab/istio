@@ -88,7 +88,7 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	if err != nil || annoCipher == nil {
 		log.Fatal("Fail to query")
 	} else {
-		log.Fatal("Annotation Overriding Triggered")
+		log.Info("Annotation Overriding Triggered")
 		ciphers = annoCipher
 	}
 
