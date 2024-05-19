@@ -395,23 +395,28 @@ func (lb *ListenerBuilder) getFilterChainsByServicePort(chainsByPort map[uint32]
 // buildInboundChainConfigs builds all the application chain configs.
 func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 	chainsByPort := make(map[uint32]inboundChainConfig)
+	log.Infof("buildInboundChainConfigs : flow 1")
 	// No user supplied sidecar scope or the user supplied one has no ingress listeners.
 	if !lb.node.SidecarScope.HasIngressListener() {
-
+		log.Infof("buildInboundChainConfigs : flow 2")
 		// We should not create inbound listeners in NONE mode based on the service instances
 		// Doing so will prevent the workloads from starting as they would be listening on the same port
 		// Users are required to provide the sidecar config to define the inbound listeners
 		if lb.node.GetInterceptionMode() == model.InterceptionNone {
+			log.Infof("buildInboundChainConfigs : flow 3")
 			return nil
 		}
 		chainsByPort = lb.getFilterChainsByServicePort(chainsByPort, false)
 	} else {
+		log.Infof("buildInboundChainConfigs : flow 4")
 		// only allow to merge inbound listeners if sidecar has ingress listener pilot has env EnableSidecarServiceInboundListenerMerge set
 		if features.EnableSidecarServiceInboundListenerMerge {
+			log.Infof("buildInboundChainConfigs : flow 5")
 			chainsByPort = lb.getFilterChainsByServicePort(chainsByPort, true)
 		}
 
 		for _, i := range lb.node.SidecarScope.Sidecar.Ingress {
+			log.Infof("buildInboundChainConfigs : flow 6")
 			port := model.ServiceInstancePort{
 				ServicePort: &model.Port{
 					Name:     i.Port.Name,
@@ -423,6 +428,7 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 			bindtoPort := getBindToPort(i.CaptureMode, lb.node)
 			// Skip ports we cannot bind to
 			if !lb.node.CanBindToPort(bindtoPort, port.TargetPort) {
+				log.Infof("buildInboundChainConfigs : flow 7")
 				log.Warnf("buildInboundListeners: skipping privileged sidecar port %d for node %s as it is an unprivileged proxy",
 					port.TargetPort, lb.node.ID)
 				continue
@@ -439,6 +445,7 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 				hbone:       lb.node.IsWaypointProxy(),
 			}
 			if cc.bind == "" {
+				log.Infof("buildInboundChainConfigs : flow 8")
 				// If user didn't provide, pick one based on IP
 				actualWildcards := getSidecarInboundBindIPs(lb.node)
 				cc.bind = actualWildcards[0]
@@ -448,6 +455,7 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 			}
 			// for inbound only generate a standalone listener when bindToPort=true
 			if bindtoPort && conflictWithStaticListener(lb.node, cc.bind, port.Port, port.Protocol) {
+				log.Infof("buildInboundChainConfigs : flow 9")
 				log.Warnf("buildInboundListeners: skipping sidecar port %d for node %s as it conflicts with static listener",
 					port.TargetPort, lb.node.ID)
 				continue
@@ -455,11 +463,13 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 
 			// If there is a conflict, we will use the oldest Service. This impacts the protocol used as well.
 			if old, f := chainsByPort[port.TargetPort]; f {
+				log.Infof("buildInboundChainConfigs : flow 10")
 				reportInboundConflict(lb, old, cc)
 				continue
 			}
 
 			if i.Tls != nil && features.EnableTLSOnSidecarIngress {
+				log.Infof("buildInboundChainConfigs : flow 11")
 				// User provided custom TLS settings
 				cc.tlsSettings = i.Tls.DeepCopy()
 				log.Infof("trigger : TLS Configuration if statement")
@@ -471,9 +481,12 @@ func (lb *ListenerBuilder) buildInboundChainConfigs() []inboundChainConfig {
 			log.Infof("Security.FilterCipherSuites %+v", cc.tlsSettings.CipherSuites)
 			chainsByPort[port.TargetPort] = cc
 		}
+		log.Infof("buildInboundChainConfigs : flow 12")
 	}
+	log.Infof("buildInboundChainConfigs : flow 13")
 	chainConfigs := make([]inboundChainConfig, 0, len(chainsByPort))
 	for _, cc := range chainsByPort {
+		log.Infof("buildInboundChainConfigs : flow 14")
 		chainConfigs = append(chainConfigs, cc)
 	}
 	// Give a stable order to the chains
