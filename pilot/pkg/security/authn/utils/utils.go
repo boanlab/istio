@@ -15,7 +15,14 @@
 package utils
 
 import (
+	"context"
+	"fmt"
 	tls "github.com/envoyproxy/go-control-plane/envoy/extensions/transport_sockets/tls/v3"
+	"istio.io/istio/pkg/log"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"strings"
 
 	meshconfig "istio.io/api/mesh/v1alpha1"
 	"istio.io/istio/pilot/pkg/features"
@@ -69,10 +76,22 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 		// protocol, e.g. HTTP/2.
 		ctx.CommonTlsContext.AlpnProtocols = util.ALPNHttp
 	}
+
 	ciphers := SupportedCiphers
 	if mc != nil && mc.MeshMTLS != nil && mc.MeshMTLS.CipherSuites != nil {
 		ciphers = mc.MeshMTLS.CipherSuites
 	}
+
+	// fetching annotation ciphersuites from pods and namespaces
+	// namespace have priority when the function returns annotation ciphersuites
+	annoCipher, err := getCiphersuitesFromAnnoation(node)
+	if err != nil || annoCipher == nil {
+		log.Fatal("Fail to query")
+	} else {
+		log.Fatal("Annotation Overriding Triggered")
+		ciphers = annoCipher
+	}
+
 	// Set Minimum TLS version to match the default client version and allowed strong cipher suites for sidecars.
 	ctx.CommonTlsContext.TlsParams = &tls.TlsParameters{
 		CipherSuites:              ciphers,
@@ -82,6 +101,45 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	authn_model.ApplyToCommonTLSContext(ctx.CommonTlsContext, node, []string{}, /*subjectAltNames*/
 		trustDomainAliases, ctx.RequireClientCertificate.Value)
 	return ctx
+}
+
+func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
+	var err error
+	// Configure the ciphersuites from pod annotation by querying to k8s API Server
+	k8sConfig, err := rest.InClusterConfig()
+
+	if err != nil {
+		return nil, fmt.Errorf("error triggered when fetching k8s config file")
+	}
+
+	clientset, err := kubernetes.NewForConfig(k8sConfig)
+	if err != nil {
+		return nil, fmt.Errorf("error triggered when fetching k8s config file")
+	}
+
+	parsedPodID := strings.Split(node.ID, ".")
+
+	podName := parsedPodID[0]
+	namespaceName := parsedPodID[1]
+
+	pod, err := clientset.CoreV1().Pods(namespaceName).Get(context.TODO(), podName, metav1.GetOptions{})
+	// annotation can contain ciphersuites at once
+	// if you consider to use multiple ciphersuites, then special format (json, concatenated strings) would be needed
+	var cipherSuitesFromPodAnnos []string
+	for key, values := range pod.Annotations {
+		if key == "cipherSuites" {
+			cipherSuitesFromPodAnnos = append(cipherSuitesFromPodAnnos, values)
+		}
+		log.Infof("%s, %s", key, values)
+	}
+
+	// this function doesn't validate ciphersuites, if it needs, then use FilterCiphersuites()
+	var ret []string
+	if cipherSuitesFromPodAnnos != nil {
+		ret = cipherSuitesFromPodAnnos
+	}
+
+	return ret, err
 }
 
 // GetMinTLSVersion returns the minimum TLS version for workloads based on the mesh config.
