@@ -77,7 +77,7 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	ctx.CommonTlsContext.TlsParams = &tls.TlsParameters{
 		CipherSuites:              ciphers,
 		TlsMinimumProtocolVersion: minTLSVersion,
-		TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+		TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 	}
 	authn_model.ApplyToCommonTLSContext(ctx.CommonTlsContext, node, []string{}, /*subjectAltNames*/
 		trustDomainAliases, ctx.RequireClientCertificate.Value)
@@ -88,7 +88,7 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 func GetMinTLSVersion(ver meshconfig.MeshConfig_TLSConfig_TLSProtocol) tls.TlsParameters_TlsProtocol {
 	switch ver {
 	case meshconfig.MeshConfig_TLSConfig_TLSV1_3:
-		return tls.TlsParameters_TLSv1_3
+		return tls.TlsParameters_TLSv1_2
 	default:
 		return tls.TlsParameters_TLSv1_2
 	}
