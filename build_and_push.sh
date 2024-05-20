@@ -4,6 +4,9 @@ if [ -z "$HUB" ] || [ -z "$TAG" ]; then
     echo "Error: Missing arguments. Please provide the TAG name and HUB."
     exit 1
 fi
+
+set -e 
+
 make build
 
 
@@ -15,14 +18,13 @@ docker push $HUB/proxyv2:$TAG
 
 yes | istioctl uninstall --purge
 
-envsubst < ./istiod_manifest_boan/custom_istio_debug.yaml > ./istiod_manifest_boan/custom_istio_debug_temp.yaml
+envsubst < ./istiod_manifests_boan/custom_istio_debug.yaml > ./istiod_manifests_boan/custom_istio_debug_temp.yaml
 
-yes | istioctl install -f ./istiod_manifest_boan/custom_istio_debug_temp.yaml  --log_output_level=debug
+yes | istioctl install -f ./istiod_manifests_boan/custom_istio_debug_temp.yaml  --log_output_level=debug
 
-rm ./istiod_manifest_boan/custom_istio_debug_temp.yaml
+rm ./istiod_manifests_boan/custom_istio_debug_temp.yaml
 
 kubectl get pods -n istio-system 
 
 istioctl dashboard controlz deployment/istiod.istio-system
-
 
