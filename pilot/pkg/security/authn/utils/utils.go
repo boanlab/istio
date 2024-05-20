@@ -82,8 +82,9 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 		ciphers = mc.MeshMTLS.CipherSuites
 	}
 
-	// fetching annotation ciphersuites from pods and namespaces
-	// namespace have priority when the function returns annotation ciphersuites
+	// Fetching the 'cipherSuites' annotation from pods and namespaces
+	// The namespace annotation has priority over the pod annotation
+	// when the function returns cipher suites from these annotations
 	annoCipher, err := getCiphersuitesFromAnnoation(node)
 	if err != nil || annoCipher == nil {
 		log.Fatal("Fail to query")
@@ -117,9 +118,6 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 	}
 
 	clientset, err := kubernetes.NewForConfig(k8sConfig)
-	if err != nil {
-		return nil, fmt.Errorf("error triggered when fetching k8s config file")
-	}
 
 	parsedPodID := strings.Split(node.ID, ".")
 
