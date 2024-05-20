@@ -605,7 +605,7 @@ func forwardToEnvoy(con *ProxyConnection, resp *discovery.DiscoveryResponse) {
 			// for downstream error channel.
 			proxyLog.Debugf("downstream [%d] error channel full, but get downstream send error: %v", con.conID, err)
 		}
-
+		proxyLog.Infof("resp.TypeUrl %+v", resp.TypeUrl)
 		return
 	}
 }
