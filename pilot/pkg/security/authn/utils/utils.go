@@ -93,10 +93,11 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	}
 
 	// Set Minimum TLS version to match the default client version and allowed strong cipher suites for sidecars.
+	// Set Max TLS version to TLS 1.2
 	ctx.CommonTlsContext.TlsParams = &tls.TlsParameters{
 		CipherSuites:              ciphers,
 		TlsMinimumProtocolVersion: minTLSVersion,
-		TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_3,
+		TlsMaximumProtocolVersion: tls.TlsParameters_TLSv1_2,
 	}
 
 	log.Infof("TLS Params: %+v", ctx.CommonTlsContext.TlsParams)
@@ -160,10 +161,11 @@ func getCiphersuitesFromAnnoation(node *model.Proxy) ([]string, error) {
 }
 
 // GetMinTLSVersion returns the minimum TLS version for workloads based on the mesh config.
+// this function return whatever TLS version set
 func GetMinTLSVersion(ver meshconfig.MeshConfig_TLSConfig_TLSProtocol) tls.TlsParameters_TlsProtocol {
 	switch ver {
 	case meshconfig.MeshConfig_TLSConfig_TLSV1_3:
-		return tls.TlsParameters_TLSv1_3
+		return tls.TlsParameters_TLSv1_2
 	default:
 		return tls.TlsParameters_TLSv1_2
 	}
