@@ -101,5 +101,6 @@ func (l LdsGenerator) Generate(proxy *model.Proxy, _ *model.WatchedResource, req
 			Resource: protoconv.MessageToAny(c),
 		})
 	}
+	log.Infof("listener : %+v", resources)
 	return resources, model.DefaultXdsLogDetails, nil
 }
