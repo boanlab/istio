@@ -18,8 +18,6 @@ package ambient
 import (
 	"strings"
 
-	v1 "k8s.io/api/core/v1"
-
 	securityclient "istio.io/client-go/pkg/apis/security/v1beta1"
 	"istio.io/istio/pilot/pkg/features"
 	"istio.io/istio/pilot/pkg/model"
@@ -30,22 +28,25 @@ import (
 )
 
 func PolicyCollections(
-	AuthzPolicies krt.Collection[*securityclient.AuthorizationPolicy],
-	PeerAuths krt.Collection[*securityclient.PeerAuthentication],
-	MeshConfig krt.Singleton[MeshConfig],
-	Waypoints krt.Collection[Waypoint],
-	Pods krt.Collection[*v1.Pod],
+	authzPolicies krt.Collection[*securityclient.AuthorizationPolicy],
+	peerAuths krt.Collection[*securityclient.PeerAuthentication],
+	meshConfig krt.Singleton[MeshConfig],
+	waypoints krt.Collection[Waypoint],
 ) (krt.Collection[model.WorkloadAuthorization], krt.Collection[model.WorkloadAuthorization]) {
-	AuthzDerivedPolicies := krt.NewCollection(AuthzPolicies, func(ctx krt.HandlerContext, i *securityclient.AuthorizationPolicy) *model.WorkloadAuthorization {
-		meshCfg := krt.FetchOne(ctx, MeshConfig.AsCollection())
+	AuthzDerivedPolicies := krt.NewCollection(authzPolicies, func(ctx krt.HandlerContext, i *securityclient.AuthorizationPolicy) *model.WorkloadAuthorization {
+		meshCfg := krt.FetchOne(ctx, meshConfig.AsCollection())
 		pol := convertAuthorizationPolicy(meshCfg.GetRootNamespace(), i)
 		if pol == nil {
 			return nil
 		}
-		return &model.WorkloadAuthorization{Authorization: pol, LabelSelector: model.NewSelector(i.Spec.GetSelector().GetMatchLabels())}
+		return &model.WorkloadAuthorization{
+			Authorization: pol,
+			LabelSelector: model.NewSelector(i.Spec.GetSelector().GetMatchLabels()),
+		}
 	}, krt.WithName("AuthzDerivedPolicies"))
-	PeerAuthDerivedPolicies := krt.NewCollection(PeerAuths, func(ctx krt.HandlerContext, i *securityclient.PeerAuthentication) *model.WorkloadAuthorization {
-		meshCfg := krt.FetchOne(ctx, MeshConfig.AsCollection())
+
+	PeerAuthDerivedPolicies := krt.NewCollection(peerAuths, func(ctx krt.HandlerContext, i *securityclient.PeerAuthentication) *model.WorkloadAuthorization {
+		meshCfg := krt.FetchOne(ctx, meshConfig.AsCollection())
 		pol := convertPeerAuthentication(meshCfg.GetRootNamespace(), i)
 		if pol == nil {
 			return nil
@@ -55,12 +56,16 @@ func PolicyCollections(
 			LabelSelector: model.NewSelector(i.Spec.GetSelector().GetMatchLabels()),
 		}
 	}, krt.WithName("PeerAuthDerivedPolicies"))
-	ImplicitWaypointPolicies := krt.NewCollection(Waypoints, implicitWaypointPolicy, krt.WithName("DefaultAllowFromWaypointPolicies"))
+
+	ImplicitWaypointPolicies := krt.NewCollection(waypoints, func(ctx krt.HandlerContext, waypoint Waypoint) *model.WorkloadAuthorization {
+		return implicitWaypointPolicy(ctx, meshConfig, waypoint)
+	}, krt.WithName("DefaultAllowFromWaypointPolicies"))
+
 	DefaultPolicy := krt.NewSingleton[model.WorkloadAuthorization](func(ctx krt.HandlerContext) *model.WorkloadAuthorization {
-		if len(krt.Fetch(ctx, PeerAuths)) == 0 {
+		if len(krt.Fetch(ctx, peerAuths)) == 0 {
 			return nil
 		}
-		meshCfg := krt.FetchOne(ctx, MeshConfig.AsCollection())
+		meshCfg := krt.FetchOne(ctx, meshConfig.AsCollection())
 		// If there are any PeerAuthentications in our cache, send our static STRICT policy
 		return &model.WorkloadAuthorization{
 			LabelSelector: model.LabelSelector{},
@@ -89,6 +94,7 @@ func PolicyCollections(
 			},
 		}
 	}, krt.WithName("DefaultPolicy"))
+
 	// Policies contains all of the policies we will send down to clients
 	Policies := krt.JoinCollection([]krt.Collection[model.WorkloadAuthorization]{
 		AuthzDerivedPolicies,
@@ -107,10 +113,11 @@ func implicitWaypointPolicyName(waypoint *Waypoint) string {
 	return "istio_allow_waypoint_" + waypoint.Namespace + "_" + waypoint.Name
 }
 
-func implicitWaypointPolicy(ctx krt.HandlerContext, waypoint Waypoint) *model.WorkloadAuthorization {
+func implicitWaypointPolicy(ctx krt.HandlerContext, MeshConfig krt.Singleton[MeshConfig], waypoint Waypoint) *model.WorkloadAuthorization {
 	if !features.DefaultAllowFromWaypoint || len(waypoint.ServiceAccounts) == 0 {
 		return nil
 	}
+	meshCfg := krt.FetchOne(ctx, MeshConfig.AsCollection())
 	return &model.WorkloadAuthorization{
 		Authorization: &security.Authorization{
 			Name:      implicitWaypointPolicyName(&waypoint),
@@ -126,7 +133,7 @@ func implicitWaypointPolicy(ctx krt.HandlerContext, waypoint Waypoint) *model.Wo
 							{
 								Principals: slices.Map(waypoint.ServiceAccounts, func(sa string) *security.StringMatch {
 									return &security.StringMatch{MatchType: &security.StringMatch_Exact{
-										Exact: strings.TrimPrefix(spiffe.MustGenSpiffeURI(waypoint.Namespace, sa), spiffe.URIPrefix),
+										Exact: strings.TrimPrefix(spiffe.MustGenSpiffeURI(meshCfg.MeshConfig, waypoint.Namespace, sa), spiffe.URIPrefix),
 									}}
 								}),
 							},

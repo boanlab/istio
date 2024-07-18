@@ -310,25 +310,25 @@ func TestCommonHttpProtocolOptions(t *testing.T) {
 			clusterName:           "outbound|8080||*.example.org",
 			useDownStreamProtocol: false,
 			proxyType:             model.SidecarProxy,
-			clusters:              8,
+			clusters:              7,
 		},
 		{
 			clusterName:           "inbound|10001||",
 			useDownStreamProtocol: false,
 			proxyType:             model.SidecarProxy,
-			clusters:              8,
+			clusters:              7,
 		},
 		{
 			clusterName:           "outbound|9090||*.example.org",
 			useDownStreamProtocol: true,
 			proxyType:             model.SidecarProxy,
-			clusters:              8,
+			clusters:              7,
 		},
 		{
 			clusterName:           "inbound|10002||",
 			useDownStreamProtocol: true,
 			proxyType:             model.SidecarProxy,
-			clusters:              8,
+			clusters:              7,
 		},
 		{
 			clusterName:           "outbound|8080||*.example.org",
@@ -451,7 +451,7 @@ func buildTestClusters(c clusterTest) []*cluster.Cluster {
 			Service:     service,
 			ServicePort: servicePort[0],
 			Endpoint: &model.IstioEndpoint{
-				Address:         "6.6.6.6",
+				Addresses:       []string{"6.6.6.6"},
 				ServicePortName: servicePort[0].Name,
 				EndpointPort:    10001,
 				Locality: model.Locality{
@@ -466,7 +466,7 @@ func buildTestClusters(c clusterTest) []*cluster.Cluster {
 			Service:     service,
 			ServicePort: servicePort[0],
 			Endpoint: &model.IstioEndpoint{
-				Address:         "6.6.6.6",
+				Addresses:       []string{"6.6.6.6"},
 				ServicePortName: servicePort[0].Name,
 				EndpointPort:    10001,
 				Locality: model.Locality{
@@ -481,7 +481,7 @@ func buildTestClusters(c clusterTest) []*cluster.Cluster {
 			Service:     service,
 			ServicePort: servicePort[0],
 			Endpoint: &model.IstioEndpoint{
-				Address:         "6.6.6.6",
+				Addresses:       []string{"6.6.6.6"},
 				ServicePortName: servicePort[0].Name,
 				EndpointPort:    10001,
 				Locality: model.Locality{
@@ -497,7 +497,7 @@ func buildTestClusters(c clusterTest) []*cluster.Cluster {
 			ServicePort: servicePort[1],
 			Endpoint: &model.IstioEndpoint{
 				ServicePortName: servicePort[1].Name,
-				Address:         "6.6.6.6",
+				Addresses:       []string{"6.6.6.6"},
 				EndpointPort:    10002,
 				Locality: model.Locality{
 					ClusterID: "",
@@ -1273,7 +1273,7 @@ func TestStatNamePattern(t *testing.T) {
 		EnableAutoMtls: &wrappers.BoolValue{
 			Value: false,
 		},
-		InboundClusterStatName:  "LocalService_%SERVICE%",
+		InboundClusterStatName:  "LocalService_%SERVICE%;",
 		OutboundClusterStatName: "%SERVICE%_%SERVICE_PORT_NAME%_%SERVICE_PORT%",
 	}
 
@@ -1284,8 +1284,8 @@ func TestStatNamePattern(t *testing.T) {
 			Host: "*.example.org",
 		},
 	})
-	g.Expect(xdstest.ExtractCluster("outbound|8080||*.example.org", clusters).AltStatName).To(Equal("*.example.org_default_8080"))
-	g.Expect(xdstest.ExtractCluster("inbound|10001||", clusters).AltStatName).To(Equal("LocalService_*.example.org"))
+	g.Expect(xdstest.ExtractCluster("outbound|8080||*.example.org", clusters).AltStatName).To(Equal("*.example.org_default_8080;"))
+	g.Expect(xdstest.ExtractCluster("inbound|10001||", clusters).AltStatName).To(Equal("LocalService_*.example.org;"))
 }
 
 func TestDuplicateClusters(t *testing.T) {
@@ -1734,7 +1734,7 @@ func TestBuildInboundClustersPortLevelCircuitBreakerThresholds(t *testing.T) {
 			Service:     service,
 			ServicePort: servicePort,
 			Endpoint: &model.IstioEndpoint{
-				Address:      "1.1.1.1",
+				Addresses:    []string{"1.1.1.1"},
 				EndpointPort: 10001,
 			},
 		},
@@ -1876,7 +1876,7 @@ func TestInboundClustersPassThroughBindIPs(t *testing.T) {
 			Service:     service,
 			ServicePort: servicePort,
 			Endpoint: &model.IstioEndpoint{
-				Address:      "1.1.1.1",
+				Addresses:    []string{"1.1.1.1"},
 				EndpointPort: 10001,
 			},
 		},
@@ -1884,11 +1884,28 @@ func TestInboundClustersPassThroughBindIPs(t *testing.T) {
 			Service:     service,
 			ServicePort: servicePort,
 			Endpoint: &model.IstioEndpoint{
-				Address:      "2001:1::1",
+				Addresses:    []string{"2001:1::1"},
+				EndpointPort: 10001,
+			},
+		},
+		{
+			Service:     service,
+			ServicePort: servicePort,
+			Endpoint: &model.IstioEndpoint{
+				Addresses:    []string{"1.1.1.1", "2001:1::1"},
+				EndpointPort: 10001,
+			},
+		},
+		{
+			Service:     service,
+			ServicePort: servicePort,
+			Endpoint: &model.IstioEndpoint{
+				Addresses:    []string{"2.2.2.2", "2001:1::2"},
 				EndpointPort: 10001,
 			},
 		},
 	}
+
 	inboundFilter := func(c *cluster.Cluster) bool {
 		return strings.HasPrefix(c.Name, "inbound|")
 	}
@@ -2386,7 +2403,7 @@ func TestBuildStaticClusterWithNoEndPoint(t *testing.T) {
 
 	// Expect to ignore STRICT_DNS cluster without endpoints.
 	g.Expect(xdstest.MapKeys(xdstest.ExtractClusters(clusters))).
-		To(Equal([]string{"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster"}))
+		To(Equal([]string{"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster"}))
 }
 
 func TestEnvoyFilterPatching(t *testing.T) {
@@ -2411,14 +2428,14 @@ func TestEnvoyFilterPatching(t *testing.T) {
 	}{
 		{
 			"no config",
-			[]string{"outbound|8080||static.test", "BlackHoleCluster", "PassthroughCluster", "InboundPassthroughClusterIpv4"},
+			[]string{"outbound|8080||static.test", "BlackHoleCluster", "PassthroughCluster", "InboundPassthroughCluster"},
 			nil,
 			model.SidecarProxy,
 			service,
 		},
 		{
 			"add cluster",
-			[]string{"outbound|8080||static.test", "BlackHoleCluster", "PassthroughCluster", "InboundPassthroughClusterIpv4", "new-cluster1"},
+			[]string{"outbound|8080||static.test", "BlackHoleCluster", "PassthroughCluster", "InboundPassthroughCluster", "new-cluster1"},
 			[]*networking.EnvoyFilter{{
 				ConfigPatches: []*networking.EnvoyFilter_EnvoyConfigObjectPatch{{
 					ApplyTo: networking.EnvoyFilter_CLUSTER,
@@ -2436,7 +2453,7 @@ func TestEnvoyFilterPatching(t *testing.T) {
 		},
 		{
 			"remove cluster",
-			[]string{"outbound|8080||static.test", "PassthroughCluster", "InboundPassthroughClusterIpv4"},
+			[]string{"outbound|8080||static.test", "PassthroughCluster", "InboundPassthroughCluster"},
 			[]*networking.EnvoyFilter{{
 				ConfigPatches: []*networking.EnvoyFilter_EnvoyConfigObjectPatch{{
 					ApplyTo: networking.EnvoyFilter_CLUSTER,
@@ -3272,7 +3289,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			watchedResourceNames: []string{"outbound|8080||test.com"},
 			usedDelta:            true,
 			removedClusters:      nil,
-			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "outbound|8080||testnew.com"},
+			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "outbound|8080||testnew.com"},
 		},
 		{
 			name:                 "service is removed",
@@ -3281,7 +3298,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			watchedResourceNames: []string{"outbound|8080||test.com"},
 			usedDelta:            true,
 			removedClusters:      []string{"outbound|8080||test.com"},
-			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster"},
+			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster"},
 		},
 		{
 			name:          "service port is removed",
@@ -3290,12 +3307,12 @@ func TestBuildDeltaClusters(t *testing.T) {
 			instances: []*model.ServiceInstance{{
 				Service:     testService1,
 				ServicePort: &model.Port{Port: 8080},
-				Endpoint:    &model.IstioEndpoint{Address: "127.0.0.1", ServicePortName: "8080", EndpointPort: 8080},
+				Endpoint:    &model.IstioEndpoint{Addresses: []string{"127.0.0.1"}, ServicePortName: "8080", EndpointPort: 8080},
 			}},
 			watchedResourceNames: []string{"outbound|7070||test.com", "inbound|7070||", "inbound|8080||"},
 			usedDelta:            true,
 			removedClusters:      []string{"inbound|7070||", "outbound|7070||test.com"},
-			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "inbound|8080||", "outbound|8080||test.com"},
+			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "inbound|8080||", "outbound|8080||test.com"},
 		},
 		{
 			name:     "destination rule with no subsets is updated",
@@ -3313,7 +3330,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "outbound|8080||test.com",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "outbound|8080||test.com",
 			},
 		},
 		{
@@ -3332,7 +3349,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      []string{},
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 				"outbound|8080|subset-1|test.com", "outbound|8080|subset-2|test.com", "outbound|8080||test.com",
 			},
 		},
@@ -3352,7 +3369,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      []string{"outbound|8080|subset-1|test.com"},
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 				"outbound|8080|subset-2|test.com", "outbound|8080||test.com",
 			},
 		},
@@ -3371,7 +3388,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			watchedResourceNames: []string{"outbound|8080|subset-2|test.com", "outbound|8080||test.com"},
 			usedDelta:            true,
 			removedClusters:      []string{"outbound|8080|subset-2|test.com"},
-			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "outbound|8080||test.com"},
+			expectedClusters:     []string{"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "outbound|8080||test.com"},
 		},
 		{
 			name:     "destination rule with wildcard matching hosts",
@@ -3389,7 +3406,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 				"outbound|8080|subset-1|test.com", "outbound|8080|subset-2|test.com", "outbound|8080||test.com",
 			},
 		},
@@ -3417,7 +3434,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "outbound|8080||test.com",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "outbound|8080||test.com",
 			},
 		},
 		{
@@ -3444,7 +3461,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", "outbound|8080||test.com", "outbound|8080||testnew.com",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", "outbound|8080||test.com", "outbound|8080||testnew.com",
 			},
 		},
 		{
@@ -3465,7 +3482,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            true,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 				"outbound|8080|subset-1|test.com", "outbound|8080|subset-2|test.com", "outbound|8080||test.com",
 				"outbound|8080||testnew.com",
 			},
@@ -3478,7 +3495,7 @@ func TestBuildDeltaClusters(t *testing.T) {
 			usedDelta:            false,
 			removedClusters:      nil,
 			expectedClusters: []string{
-				"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+				"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 				"outbound|8080||test.com", "outbound|8080||testnew.com",
 			},
 		},
@@ -3536,7 +3553,7 @@ func TestBuildStaticClusterWithCredentialSocket(t *testing.T) {
 	clusters := cg.Clusters(proxy)
 	xdstest.ValidateClusters(t, clusters)
 	g.Expect(xdstest.MapKeys(xdstest.ExtractClusters(clusters))).To(Equal([]string{
-		"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster", security.SDSExternalClusterName,
+		"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster", security.SDSExternalClusterName,
 	}))
 
 	// Expect no sds_external cluster be added if if credentialSocket does NOT exists
@@ -3544,6 +3561,6 @@ func TestBuildStaticClusterWithCredentialSocket(t *testing.T) {
 	clusters = cg.Clusters(proxy)
 	xdstest.ValidateClusters(t, clusters)
 	g.Expect(xdstest.MapKeys(xdstest.ExtractClusters(clusters))).To(Equal([]string{
-		"BlackHoleCluster", "InboundPassthroughClusterIpv4", "PassthroughCluster",
+		"BlackHoleCluster", "InboundPassthroughCluster", "PassthroughCluster",
 	}))
 }

@@ -165,30 +165,15 @@ func (e WorkloadRBACGenerator) GenerateDeltas(
 ) (model.Resources, model.DeletedResources, model.XdsLogDetails, bool, error) {
 	var updatedPolicies sets.Set[model.ConfigKey]
 	if len(req.ConfigsUpdated) != 0 {
+		// The ambient store will send all of these as kind.AuthorizationPolicy, even if generated from PeerAuthentication,
+		// so we can only fetch these ones.
 		updatedPolicies = model.ConfigsOfKind(req.ConfigsUpdated, kind.AuthorizationPolicy)
-		// Convert the actual Kubernetes PeerAuthentication policies to the synthetic ones
-		// by adding the prefix
-		//
-		// This is needed because the handler that produces the ConfigUpdate blindly sends
-		// the Kubernetes resource names without context of the synthetic Ambient policies
-		// TODO: Split out PeerAuthentication into a separate handler in
-		// https://github.com/istio/istio/blob/master/pilot/pkg/bootstrap/server.go#L882
-		for p := range model.ConfigsOfKind(req.ConfigsUpdated, kind.PeerAuthentication) {
-			updatedPolicies.Insert(model.ConfigKey{
-				Name:      model.GetAmbientPolicyConfigName(p),
-				Namespace: p.Namespace,
-				Kind:      p.Kind,
-			})
-		}
 	}
 	if len(req.ConfigsUpdated) != 0 && len(updatedPolicies) == 0 {
 		// This was a incremental push for a resource we don't watch... skip
 		return nil, nil, model.DefaultXdsLogDetails, false, nil
 	}
 
-	policies := e.Server.Env.ServiceDiscovery.Policies(updatedPolicies)
-
-	resources := make(model.Resources, 0)
 	expected := sets.New[string]()
 	if len(updatedPolicies) > 0 {
 		// Partial update. Removes are ones we request but didn't get back when querying the policies
@@ -200,17 +185,18 @@ func (e WorkloadRBACGenerator) GenerateDeltas(
 		expected.InsertAll(w.ResourceNames...)
 	}
 
-	removed := expected
+	resources := make(model.Resources, 0)
+	policies := e.Server.Env.ServiceDiscovery.Policies(updatedPolicies)
 	for _, p := range policies {
 		n := p.ResourceName()
-		removed.Delete(n) // We found it, so it isn't a removal
+		expected.Delete(n) // delete the generated policy name, left the removed ones
 		resources = append(resources, &discovery.Resource{
 			Name:     n,
 			Resource: protoconv.MessageToAny(p.Authorization),
 		})
 	}
 
-	return resources, sets.SortedList(removed), model.XdsLogDetails{}, true, nil
+	return resources, sets.SortedList(expected), model.XdsLogDetails{}, true, nil
 }
 
 func (e WorkloadRBACGenerator) Generate(proxy *model.Proxy, w *model.WatchedResource, req *model.PushRequest) (model.Resources, model.XdsLogDetails, error) {

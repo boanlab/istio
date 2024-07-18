@@ -30,8 +30,8 @@ import (
 	networking "istio.io/api/networking/v1alpha3"
 	"istio.io/istio/pilot/pkg/features"
 	"istio.io/istio/pilot/pkg/model"
+	"istio.io/istio/pilot/pkg/networking/core/listenertest"
 	"istio.io/istio/pilot/pkg/networking/plugin/authz"
-	"istio.io/istio/pilot/pkg/networking/util"
 	"istio.io/istio/pilot/test/xdstest"
 	"istio.io/istio/pkg/config"
 	"istio.io/istio/pkg/config/protocol"
@@ -72,7 +72,26 @@ func buildListeners(t *testing.T, o TestOptions, p *model.Proxy) []*listener.Lis
 		i := &model.ServiceInstance{
 			Service: s,
 			Endpoint: &model.IstioEndpoint{
-				Address:      "1.1.1.1",
+				Addresses:    []string{"1.1.1.1"},
+				EndpointPort: 8080, // service port is 80, target port is 8080
+			},
+			ServicePort: s.Ports[0],
+		}
+		cg.MemRegistry.AddInstance(i)
+	}
+	l := cg.Listeners(cg.SetupProxy(p))
+	xdstest.ValidateListeners(t, l)
+	return l
+}
+
+func buildListenersWithMulAddrsEP(t *testing.T, o TestOptions, p *model.Proxy) []*listener.Listener {
+	cg := NewConfigGenTest(t, o)
+	// Hack up some instances for each Service
+	for _, s := range o.Services {
+		i := &model.ServiceInstance{
+			Service: s,
+			Endpoint: &model.IstioEndpoint{
+				Addresses:    []string{"1.1.1.1", "2001:1::1"},
 				EndpointPort: 8080, // service port is 80, target port is 8080
 			},
 			ServicePort: s.Ports[0],
@@ -103,108 +122,77 @@ func TestVirtualInboundListenerBuilder(t *testing.T) {
 				OutboundListenerExactBalance: model.StringBool(tt.useExactBalance),
 			},
 		}
-		listeners := buildListeners(t, TestOptions{Services: testServices}, proxy)
-		if vo := xdstest.ExtractListener(model.VirtualOutboundListenerName, listeners); vo == nil {
-			t.Fatalf("expect virtual listener, found %s", listeners[0].Name)
+		testCases := [][]*listener.Listener{
+			buildListeners(t, TestOptions{Services: testServices}, proxy),
+			// test instance with multiple addresses
+			buildListenersWithMulAddrsEP(t, TestOptions{Services: testServices}, proxy),
 		}
-		vi := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
-		if vi == nil {
-			t.Fatalf("expect virtual inbound listener, found %s", listeners[0].Name)
-		}
-
-		byListenerName := map[string]int{}
-
-		for _, fc := range vi.FilterChains {
-			byListenerName[fc.Name]++
-		}
-
-		for k, v := range byListenerName {
-			if k == model.VirtualInboundListenerName && v != 3 {
-				t.Fatalf("expect virtual listener has 3 passthrough filter chains, found %d", v)
+		for _, listeners := range testCases {
+			if vo := xdstest.ExtractListener(model.VirtualOutboundListenerName, listeners); vo == nil {
+				t.Fatalf("expect virtual listener, found %s", listeners[0].Name)
 			}
-			if k == model.VirtualInboundCatchAllHTTPFilterChainName && v != 2 {
-				t.Fatalf("expect virtual listener has 2 passthrough filter chains, found %d", v)
+			vi := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
+			if vi == nil {
+				t.Fatalf("expect virtual inbound listener, found %s", listeners[0].Name)
 			}
-		}
 
-		if tt.useExactBalance {
-			if vi.ConnectionBalanceConfig == nil || vi.ConnectionBalanceConfig.GetExactBalance() == nil {
-				t.Fatal("expected virtual listener to have connection balance config set to exact_balance")
+			byListenerName := map[string]int{}
+
+			for _, fc := range vi.FilterChains {
+				byListenerName[fc.Name]++
 			}
-		} else {
-			if vi.ConnectionBalanceConfig != nil {
-				t.Fatal("expected virtual listener to not have connection balance config set")
+
+			for k, v := range byListenerName {
+				if k == model.VirtualInboundListenerName && v != 3 {
+					t.Fatalf("expect virtual listener has 3 passthrough filter chains, found %d", v)
+				}
+				if k == model.VirtualInboundCatchAllHTTPFilterChainName && v != 2 {
+					t.Fatalf("expect virtual listener has 2 passthrough filter chains, found %d", v)
+				}
+			}
+
+			if tt.useExactBalance {
+				if vi.ConnectionBalanceConfig == nil || vi.ConnectionBalanceConfig.GetExactBalance() == nil {
+					t.Fatal("expected virtual listener to have connection balance config set to exact_balance")
+				}
+			} else {
+				if vi.ConnectionBalanceConfig != nil {
+					t.Fatal("expected virtual listener to not have connection balance config set")
+				}
 			}
 		}
 	}
 }
 
 func TestVirtualInboundHasPassthroughClusters(t *testing.T) {
-	listeners := buildListeners(t, TestOptions{Services: testServices}, nil)
-	l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
-	if l == nil {
-		t.Fatalf("failed to find virtual inbound listener")
+	testCases := [][]*listener.Listener{
+		buildListeners(t, TestOptions{Services: testServices}, nil),
+		// test instance with multiple addresses
+		buildListenersWithMulAddrsEP(t, TestOptions{Services: testServices}, nil),
 	}
-	sawIpv4PassthroughCluster := 0
-	sawIpv6PassthroughCluster := false
-	sawIpv4PassthroughFilterChainMatchTLSFromFakePlugin := false
-	for _, fc := range l.FilterChains {
-		if fc.TransportSocket != nil && fc.FilterChainMatch.TransportProtocol != "tls" {
-			t.Fatalf("expect passthrough filter chain sets transport protocol to tls if transport socket is set")
+	for _, listeners := range testCases {
+		l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
+		if l == nil {
+			t.Fatalf("failed to find virtual inbound listener")
 		}
-
-		if f := getTCPFilter(fc); f != nil && fc.Name == model.VirtualInboundListenerName {
-			if ipLen := len(fc.FilterChainMatch.PrefixRanges); ipLen != 1 {
-				t.Fatalf("expect passthrough filter chain has 1 ip address, found %d", ipLen)
-			}
-
-			if fc.TransportSocket != nil {
-				sawIpv4PassthroughFilterChainMatchTLSFromFakePlugin = true
-			}
-			if fc.FilterChainMatch.PrefixRanges[0].AddressPrefix == util.ConvertAddressToCidr("0.0.0.0/0").AddressPrefix &&
-				fc.FilterChainMatch.PrefixRanges[0].PrefixLen.Value == 0 {
-				if sawIpv4PassthroughCluster == 3 {
-					t.Fatalf("duplicated ipv4 passthrough cluster filter chain in listener %v", l)
-				}
-				sawIpv4PassthroughCluster++
-			} else if fc.FilterChainMatch.PrefixRanges[0].AddressPrefix == util.ConvertAddressToCidr("::0/0").AddressPrefix &&
-				fc.FilterChainMatch.PrefixRanges[0].PrefixLen.Value == 0 {
-				if sawIpv6PassthroughCluster {
-					t.Fatalf("duplicated ipv6 passthrough cluster filter chain in listener %v", l)
-				}
-				sawIpv6PassthroughCluster = true
-			}
-		}
-
-		if f := getHTTPFilter(fc); f != nil && fc.Name == model.VirtualInboundCatchAllHTTPFilterChainName {
-			if fc.TransportSocket != nil && !reflect.DeepEqual(fc.FilterChainMatch.ApplicationProtocols, mtlsHTTPALPNs) {
-				t.Fatalf("expect %v application protocols, found %v", mtlsHTTPALPNs, fc.FilterChainMatch.ApplicationProtocols)
-			}
-
-			if fc.TransportSocket == nil && !reflect.DeepEqual(fc.FilterChainMatch.ApplicationProtocols, plaintextHTTPALPNs) {
-				t.Fatalf("expect %v application protocols, found %v", plaintextHTTPALPNs, fc.FilterChainMatch.ApplicationProtocols)
-			}
-		}
-	}
-
-	if sawIpv4PassthroughCluster != 3 {
-		t.Fatalf("fail to find the ipv4 passthrough filter chain in listener, got %v: %v", sawIpv4PassthroughCluster, xdstest.Dump(t, l))
-	}
-
-	if !sawIpv4PassthroughFilterChainMatchTLSFromFakePlugin {
-		t.Fatalf("fail to find the fake plugin filter chain match with TLS in listener %v", l)
-	}
-
-	if len(l.ListenerFilters) != 3 {
-		t.Fatalf("expected %d listener filters, found %d", 3, len(l.ListenerFilters))
-	}
-
-	if l.ListenerFilters[0].Name != wellknown.OriginalDestination ||
-		l.ListenerFilters[1].Name != wellknown.TLSInspector ||
-		l.ListenerFilters[2].Name != wellknown.HTTPInspector {
-		t.Fatalf("expect listener filters [%q, %q, %q], found [%q, %q, %q]",
-			wellknown.OriginalDestination, wellknown.TLSInspector, wellknown.HTTPInspector,
-			l.ListenerFilters[0].Name, l.ListenerFilters[1].Name, l.ListenerFilters[2].Name)
+		listenertest.VerifyListener(t, l, listenertest.ListenerTest{
+			FilterChains: []listenertest.FilterChainTest{
+				{Name: "virtualInbound-blackhole"},
+				{Name: "virtualInbound-catchall-http", Type: listenertest.MTLSHTTP},
+				{Name: "virtualInbound-catchall-http", Type: listenertest.PlainHTTP},
+				{Name: "virtualInbound", Type: listenertest.MTLSTCP},
+				{Name: "virtualInbound", Type: listenertest.PlainTCP},
+				{Name: "virtualInbound", Type: listenertest.StandardTLS},
+				{Name: "0.0.0.0_8080", Type: listenertest.MTLSHTTP},
+				{Name: "0.0.0.0_8080", Type: listenertest.PlainTCP},
+			},
+			Filters: []string{
+				wellknown.OriginalDestination,
+				wellknown.TLSInspector,
+				wellknown.HTTPInspector,
+			},
+			TotalMatch: true,
+		})
 	}
 }
 
@@ -212,13 +200,19 @@ func TestSidecarInboundListenerWithOriginalSrc(t *testing.T) {
 	proxy := &model.Proxy{
 		Metadata: &model.NodeMetadata{InterceptionMode: model.InterceptionTproxy},
 	}
-	listeners := buildListeners(t, TestOptions{Services: testServices}, proxy)
-	l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
-	if l == nil {
-		t.Fatalf("failed to find virtual inbound listener")
+	testCases := [][]*listener.Listener{
+		buildListeners(t, TestOptions{Services: testServices}, proxy),
+		// test instance with multiple addresses
+		buildListenersWithMulAddrsEP(t, TestOptions{Services: testServices}, proxy),
 	}
-	if _, f := xdstest.ExtractListenerFilters(l)[wellknown.OriginalSource]; !f {
-		t.Fatalf("missing %v filter", wellknown.OriginalSource)
+	for _, listeners := range testCases {
+		l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
+		if l == nil {
+			t.Fatalf("failed to find virtual inbound listener")
+		}
+		if _, f := xdstest.ExtractListenerFilters(l)[wellknown.OriginalSource]; !f {
+			t.Fatalf("missing %v filter", wellknown.OriginalSource)
+		}
 	}
 }
 
@@ -232,13 +226,19 @@ func TestSidecarInboundListenerWithQUICAndExactBalance(t *testing.T) {
 			OutboundListenerExactBalance: true,
 		},
 	}
-	listeners := buildListeners(t, TestOptions{Services: testServicesWithQUIC}, proxy)
-	l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
-	if l == nil {
-		t.Fatalf("failed to find virtual inbound listener")
+	testCases := [][]*listener.Listener{
+		buildListeners(t, TestOptions{Services: testServicesWithQUIC}, proxy),
+		// test instance with multiple addresses
+		buildListenersWithMulAddrsEP(t, TestOptions{Services: testServicesWithQUIC}, proxy),
 	}
-	if l.ConnectionBalanceConfig == nil || l.ConnectionBalanceConfig.GetExactBalance() == nil {
-		t.Fatal("expected listener to have exact_balance set, but was empty")
+	for _, listeners := range testCases {
+		l := xdstest.ExtractListener(model.VirtualInboundListenerName, listeners)
+		if l == nil {
+			t.Fatalf("failed to find virtual inbound listener")
+		}
+		if l.ConnectionBalanceConfig == nil || l.ConnectionBalanceConfig.GetExactBalance() == nil {
+			t.Fatal("expected listener to have exact_balance set, but was empty")
+		}
 	}
 }
 
@@ -571,6 +571,14 @@ spec:
 `
 
 func TestInboundListenerFilters(t *testing.T) {
+	testInboundListenerFilters(t, false)
+	testInboundListenerFilters(t, true)
+}
+
+func testInboundListenerFilters(t *testing.T, enableDualStack bool) {
+	if enableDualStack {
+		test.SetForTest(t, &features.EnableDualStack, true)
+	}
 	services := []*model.Service{
 		buildServiceWithPort("test1.com", 80, protocol.HTTP, tnow),
 		buildServiceWithPort("test2.com", 81, protocol.Unsupported, tnow),
@@ -578,11 +586,17 @@ func TestInboundListenerFilters(t *testing.T) {
 	}
 	instances := make([]*model.ServiceInstance, 0, len(services))
 	for _, s := range services {
+		var addrs []string
+		if enableDualStack {
+			addrs = []string{"1.1.1.1", "2001:1::1"}
+		} else {
+			addrs = []string{"1.1.1.1"}
+		}
 		instances = append(instances, &model.ServiceInstance{
 			Service: s,
 			Endpoint: &model.IstioEndpoint{
 				EndpointPort: uint32(s.Ports[0].Port),
-				Address:      "1.1.1.1",
+				Addresses:    addrs,
 			},
 			ServicePort: s.Ports[0],
 		})
@@ -678,6 +692,14 @@ func evaluateListenerFilterPredicates(t testing.TB, predicate *listener.Listener
 }
 
 func TestSidecarInboundListenerFilters(t *testing.T) {
+	testSidecarInboundListenerFilters(t, false)
+	testSidecarInboundListenerFilters(t, true)
+}
+
+func testSidecarInboundListenerFilters(t *testing.T, enableDualStack bool) {
+	if enableDualStack {
+		test.SetForTest(t, &features.EnableDualStack, true)
+	}
 	services := []*model.Service{buildServiceWithPort("test.com", 80, protocol.HTTPS, tnow)}
 
 	expectIstioMTLS := func(t test.Failer, filterChain *listener.FilterChain) {
@@ -696,11 +718,17 @@ func TestSidecarInboundListenerFilters(t *testing.T) {
 	}
 	instances := make([]*model.ServiceInstance, 0, len(services))
 	for _, s := range services {
+		var addrs []string
+		if enableDualStack {
+			addrs = []string{"1.1.1.1", "2001:1::1"}
+		} else {
+			addrs = []string{"1.1.1.1"}
+		}
 		instances = append(instances, &model.ServiceInstance{
 			Service: s,
 			Endpoint: &model.IstioEndpoint{
 				EndpointPort: uint32(s.Ports[0].Port),
-				Address:      "1.1.1.1",
+				Addresses:    addrs,
 			},
 			ServicePort: s.Ports[0],
 		})
@@ -832,11 +860,6 @@ func TestHCMInternalAddressConfig(t *testing.T) {
 			expectedconfig: nil,
 		},
 		{
-			name:           "empty networks",
-			networks:       &meshconfig.MeshNetworks{},
-			expectedconfig: nil,
-		},
-		{
 			name: "networks populated",
 			networks: &meshconfig.MeshNetworks{
 				Networks: map[string]*meshconfig.Network{
@@ -845,11 +868,6 @@ func TestHCMInternalAddressConfig(t *testing.T) {
 							{
 								Ne: &meshconfig.Network_NetworkEndpoints_FromCidr{
 									FromCidr: "192.168.0.0/16",
-								},
-							},
-							{
-								Ne: &meshconfig.Network_NetworkEndpoints_FromCidr{
-									FromCidr: "172.16.0.0/12",
 								},
 							},
 						},
@@ -861,10 +879,6 @@ func TestHCMInternalAddressConfig(t *testing.T) {
 					{
 						AddressPrefix: "192.168.0.0",
 						PrefixLen:     &wrapperspb.UInt32Value{Value: 16},
-					},
-					{
-						AddressPrefix: "172.16.0.0",
-						PrefixLen:     &wrapperspb.UInt32Value{Value: 12},
 					},
 				},
 			},

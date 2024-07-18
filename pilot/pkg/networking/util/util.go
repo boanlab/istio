@@ -69,8 +69,7 @@ const (
 	PassthroughFilterChain = "PassthroughFilterChain"
 
 	// Inbound pass through cluster need to the bind the loopback ip address for the security and loop avoidance.
-	InboundPassthroughClusterIpv4 = "InboundPassthroughClusterIpv4"
-	InboundPassthroughClusterIpv6 = "InboundPassthroughClusterIpv6"
+	InboundPassthroughCluster = "InboundPassthroughCluster"
 
 	// IstioMetadataKey is the key under which metadata is added to a route or cluster
 	// regarding the virtual service or destination rule used for each
@@ -157,18 +156,23 @@ func AddrStrToPrefix(addr string) (netip.Prefix, error) {
 	return netip.PrefixFrom(ipa, ipa.BitLen()), nil
 }
 
+// PrefixToCidrRange converts from CIDR prefix to CIDR proto
+func PrefixToCidrRange(prefix netip.Prefix) *core.CidrRange {
+	return &core.CidrRange{
+		AddressPrefix: prefix.Addr().String(),
+		PrefixLen: &wrapperspb.UInt32Value{
+			Value: uint32(prefix.Bits()),
+		},
+	}
+}
+
 // AddrStrToCidrRange converts from string to CIDR proto
 func AddrStrToCidrRange(addr string) (*core.CidrRange, error) {
 	prefix, err := AddrStrToPrefix(addr)
 	if err != nil {
 		return nil, err
 	}
-	return &core.CidrRange{
-		AddressPrefix: prefix.Addr().String(),
-		PrefixLen: &wrapperspb.UInt32Value{
-			Value: uint32(prefix.Bits()),
-		},
-	}, nil
+	return PrefixToCidrRange(prefix), nil
 }
 
 // BuildAddress returns a SocketAddress with the given ip and port or uds.
@@ -596,6 +600,34 @@ func MeshConfigToEnvoyForwardClientCertDetails(c meshconfig.ForwardClientCertDet
 	return hcm.HttpConnectionManager_ForwardClientCertDetails(c - 1)
 }
 
+// MeshNetworksToEnvoyInternalAddressConfig converts all of the FromCidr Endpoints into Envy internal networks.
+// Because the input is an unordered map, the output is sorted to ensure config stability.
+func MeshNetworksToEnvoyInternalAddressConfig(nets *meshconfig.MeshNetworks) *hcm.HttpConnectionManager_InternalAddressConfig {
+	if nets == nil {
+		return nil
+	}
+	prefixes := []netip.Prefix{}
+	for _, internalnetwork := range nets.Networks {
+		for _, ne := range internalnetwork.Endpoints {
+			if prefix, err := AddrStrToPrefix(ne.GetFromCidr()); err == nil {
+				prefixes = append(prefixes, prefix)
+			}
+		}
+	}
+	if len(prefixes) == 0 {
+		return nil
+	}
+	sort.Slice(prefixes, func(a, b int) bool {
+		ap, bp := prefixes[a], prefixes[b]
+		return ap.Addr().Less(bp.Addr()) || (ap.Addr() == bp.Addr() && ap.Bits() < bp.Bits())
+	})
+	iac := &hcm.HttpConnectionManager_InternalAddressConfig{}
+	for _, prefix := range prefixes {
+		iac.CidrRanges = append(iac.CidrRanges, PrefixToCidrRange(prefix))
+	}
+	return iac
+}
+
 // ByteCount returns a human readable byte format
 // Inspired by https://yourbasic.org/golang/formatting-byte-size-to-human-readable-format/
 func ByteCount(b int) string {
@@ -670,6 +702,19 @@ func BuildInternalAddressWithIdentifier(name, identifier string) *core.Address {
 	}
 }
 
+func GetEndpointHost(e *endpoint.LbEndpoint) string {
+	addr := e.GetEndpoint().GetAddress()
+	if host := addr.GetSocketAddress().GetAddress(); host != "" {
+		return host
+	}
+	if endpointID := addr.GetEnvoyInternalAddress().GetEndpointId(); endpointID != "" {
+		// extract host from endpoint id
+		host, _, _ := net.SplitHostPort(endpointID)
+		return host
+	}
+	return ""
+}
+
 func BuildTunnelMetadataStruct(address string, port int) *structpb.Struct {
 	m := map[string]interface{}{
 		// logical destination behind the tunnel, on which policy and telemetry will be applied
@@ -694,7 +739,7 @@ func BuildStatefulSessionFilter(svc *model.Service) *hcm.HttpFilter {
 }
 
 func MaybeBuildStatefulSessionFilterConfig(svc *model.Service) *statefulsession.StatefulSession {
-	if svc == nil {
+	if svc == nil || !features.EnablePersistentSessionFilter.Load() {
 		return nil
 	}
 	sessionCookie := svc.Attributes.Labels[features.PersistentSessionLabel]
@@ -833,4 +878,8 @@ func ShallowCopyTrafficPolicy(original *networking.TrafficPolicy) *networking.Tr
 	ret.Tunnel = original.Tunnel
 	ret.ProxyProtocol = original.ProxyProtocol
 	return ret
+}
+
+func VersionGreaterOrEqual124(proxy *model.Proxy) bool {
+	return proxy.VersionGreaterOrEqual(&model.IstioVersion{Major: 1, Minor: 24, Patch: -1})
 }

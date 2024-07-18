@@ -116,7 +116,7 @@ func (configgen *ConfigGeneratorImpl) BuildHTTPRoutes(
 // TODO: trace decorators, inbound timeouts
 func buildSidecarInboundHTTPRouteConfig(lb *ListenerBuilder, cc inboundChainConfig) *route.RouteConfiguration {
 	traceOperation := telemetry.TraceOperation(string(cc.telemetryMetadata.InstanceHostname), cc.port.Port)
-	defaultRoute := istio_route.BuildDefaultHTTPInboundRoute(cc.clusterName, traceOperation)
+	defaultRoute := istio_route.BuildDefaultHTTPInboundRoute(lb.node, cc.clusterName, traceOperation)
 
 	inboundVHost := &route.VirtualHost{
 		Name:    inboundVirtualHostPrefix + strconv.Itoa(cc.port.Port), // Format: "inbound|http|%d"
@@ -644,16 +644,10 @@ func generateVirtualHostDomains(service *model.Service, listenerPort int, port i
 		}
 	}
 
-	svcAddr := service.GetAddressForProxy(node)
-	if len(svcAddr) > 0 && svcAddr != constants.UnspecifiedIP {
-		domains = appendDomainPort(domains, svcAddr, port)
-	}
-
-	// handle dual stack's extra address when generating the virtualHost domains
-	// assumes that conversion is stripping out the DefaultAddress from ClusterVIPs
-	extraAddr := service.GetExtraAddressesForProxy(node)
-	for _, addr := range extraAddr {
-		domains = appendDomainPort(domains, addr, port)
+	for _, svcAddr := range service.GetAllAddressesForProxy(node) {
+		if len(svcAddr) > 0 && svcAddr != constants.UnspecifiedIP {
+			domains = appendDomainPort(domains, svcAddr, port)
+		}
 	}
 
 	return domains, allAltHosts

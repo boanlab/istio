@@ -81,7 +81,7 @@ func setupTest(t *testing.T) (model.ConfigStoreController, kubernetes.Interface,
 	stop := istiotest.NewStop(t)
 	go configController.Run(stop)
 
-	se := serviceentry.NewController(configController, xdsUpdater)
+	se := serviceentry.NewController(configController, xdsUpdater, meshWatcher)
 	client.RunAndWait(stop)
 
 	kc.AppendWorkloadHandler(se.WorkloadInstanceHandler)
@@ -1253,7 +1253,7 @@ func expectServiceEndpointsFromIndex(t *testing.T, ei *model.EndpointIndex, svc 
 		}
 		got := slices.Map(endpoints, func(e *model.IstioEndpoint) EndpointResponse {
 			return EndpointResponse{
-				Address: e.Address,
+				Address: e.Addresses[0],
 				Port:    e.EndpointPort,
 			}
 		})

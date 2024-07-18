@@ -375,15 +375,11 @@ func (instance *WorkloadInstance) CmpOpts() []cmp.Option {
 
 // DeepCopy creates a copy of WorkloadInstance.
 func (instance *WorkloadInstance) DeepCopy() *WorkloadInstance {
-	pmap := map[string]uint32{}
-	for k, v := range instance.PortMap {
-		pmap[k] = v
-	}
 	return &WorkloadInstance{
 		Name:      instance.Name,
 		Namespace: instance.Namespace,
 		Kind:      instance.Kind,
-		PortMap:   pmap,
+		PortMap:   maps.Clone(instance.PortMap),
 		Endpoint:  instance.Endpoint.DeepCopy(),
 	}
 }
@@ -394,9 +390,11 @@ func WorkloadInstancesEqual(first, second *WorkloadInstance) bool {
 	if first.Endpoint == nil || second.Endpoint == nil {
 		return first.Endpoint == second.Endpoint
 	}
-	if first.Endpoint.Address != second.Endpoint.Address {
+
+	if !first.Endpoint.IsAddrsEqualIstioEndpoint(second.Endpoint) {
 		return false
 	}
+
 	if first.Endpoint.Network != second.Endpoint.Network {
 		return false
 	}
@@ -481,8 +479,22 @@ type IstioEndpoint struct {
 	// Labels points to the workload or deployment labels.
 	Labels labels.Instance
 
-	// Address is the address of the endpoint, using envoy proto.
-	Address string
+	// Addresses are the addresses of the endpoint, using envoy proto:
+	// https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/endpoint/v3/endpoint_components.proto#config-endpoint-v3-endpoint-additionaladdress
+	// This field can support multiple addresses for an Dual Stack endpoint, especially for an endpoint which contains both ipv4 or ipv6 addresses.
+	// There should be some constraints below:
+	// 1. Each address of the endpoint must have the same metadata.
+	// 2. The function Key() of IstioEndpoint returns the first IP address of this field in string format.
+	// 3. The IP address of field `address` in Envoy Endpoint is equal to the first address of this field.
+	// When the additional_addresses field is populated for EDS in Envoy configuration, Envoy will use an Happy Eyeballs algorithm.
+	// Therefore Envoy will first attempt connecting to the IP address in the `address` field of Envoy Endpoint.
+	// If the first attempt fails, then it will interleave IP addresses in the `additional_addresses` field based on IP version, as described in rfc8305,
+	// and attempt connections with them with a delay of 300ms each. The first connection to succeed will be used.
+	// Note: it uses Hash Based Load Balancing Policies for multiple addresses support Endpoint, and only the first address of the
+	// endpoint will be used as the hash key for the ring or maglev list, however, the upstream address that load balancer ends up
+	// connecting to will depend on the one that ends up "winning" using the Happy Eyeballs algorithm.
+	// Please refer to https://docs.google.com/document/d/1AjmTcMWwb7nia4rAgqE-iqIbSbfiXCI4h1vk-FONFdM/ for more details.
+	Addresses []string
 
 	// ServicePortName tracks the name of the port, this is used to select the IstioEndpoint by service port.
 	ServicePortName string
@@ -554,6 +566,25 @@ func (ep *IstioEndpoint) IsDiscoverableFromProxy(p *Proxy) bool {
 	return ep.DiscoverabilityPolicy.IsDiscoverableFromProxy(ep, p)
 }
 
+// IsAddrsEqualIstioEndpoint checks the addresses of an IstioEndpoint are equal to another or not
+func (ep *IstioEndpoint) IsAddrsEqualIstioEndpoint(comp *IstioEndpoint) bool {
+	curEdAddresses := ep.Addresses
+	compEDAddresses := comp.Addresses
+
+	if len(curEdAddresses) != len(compEDAddresses) {
+		return false
+	}
+
+	curEdSets := sets.New(curEdAddresses...)
+	for _, item := range compEDAddresses {
+		if !curEdSets.Contains(item) {
+			return false
+		}
+	}
+
+	return true
+}
+
 // MetadataClone returns the cloned endpoint metadata used for telemetry purposes.
 // This should be used when the endpoint labels should be updated.
 func (ep *IstioEndpoint) MetadataClone() *EndpointMetadata {
@@ -583,6 +614,13 @@ var istioEndpointCmpOpts = []cmp.Option{cmpopts.IgnoreUnexported(IstioEndpoint{}
 
 func (ep *IstioEndpoint) CmpOpts() []cmp.Option {
 	return istioEndpointCmpOpts
+}
+
+func (ep *IstioEndpoint) FirstAddressOrNil() string {
+	if ep == nil || len(ep.Addresses) == 0 {
+		return ""
+	}
+	return ep.Addresses[0]
 }
 
 // EndpointMetadata represents metadata set on Envoy LbEndpoint used for telemetry purposes.
@@ -1265,13 +1303,32 @@ func (s *Service) GetAddressForProxy(node *Proxy) string {
 // GetExtraAddressesForProxy returns a k8s service's extra addresses to the cluster where the node resides.
 // Especially for dual stack k8s service to get other IP family addresses.
 func (s *Service) GetExtraAddressesForProxy(node *Proxy) []string {
-	if features.EnableDualStack && node.Metadata != nil {
-		if node.Metadata.ClusterID != "" {
-			addresses := s.ClusterVIPs.GetAddressesFor(node.Metadata.ClusterID)
-			if len(addresses) > 1 {
-				return addresses[1:]
-			}
+	addresses := s.getAllAddressesForProxy(node)
+	if len(addresses) > 1 {
+		return addresses[1:]
+	}
+	return nil
+}
+
+// GetAllAddressesForProxy returns a k8s service's extra addresses to the cluster where the node resides.
+// Especially for dual stack k8s service to get other IP family addresses.
+func (s *Service) GetAllAddressesForProxy(node *Proxy) []string {
+	return s.getAllAddressesForProxy(node)
+}
+
+func (s *Service) getAllAddressesForProxy(node *Proxy) []string {
+	if node.Metadata != nil && node.Metadata.ClusterID != "" {
+		addresses := s.ClusterVIPs.GetAddressesFor(node.Metadata.ClusterID)
+		if (features.EnableDualStack || features.EnableAmbient) && len(addresses) > 0 {
+			return addresses
 		}
+		addresses = filterAddresses(addresses, node.SupportsIPv4(), node.SupportsIPv6())
+		if len(addresses) > 0 {
+			return addresses
+		}
+	}
+	if a := s.GetAddressForProxy(node); a != "" {
+		return []string{a}
 	}
 	return nil
 }
@@ -1285,6 +1342,37 @@ func (s *Service) getAllAddresses() []string {
 	}
 
 	return addresses
+}
+
+func filterAddresses(addresses []string, supportsV4, supportsV6 bool) []string {
+	var ipv4Addresses []string
+	var ipv6Addresses []string
+	for _, addr := range addresses {
+		// check if an address is a CIDR range
+		if strings.Contains(addr, "/") {
+			if prefix, err := netip.ParsePrefix(addr); err != nil {
+				log.Warnf("failed to parse prefix address '%s': %s", addr, err)
+				continue
+			} else if supportsV4 && prefix.Addr().Is4() {
+				ipv4Addresses = append(ipv4Addresses, addr)
+			} else if supportsV6 && prefix.Addr().Is6() {
+				ipv6Addresses = append(ipv6Addresses, addr)
+			}
+		} else {
+			if ipAddr, err := netip.ParseAddr(addr); err != nil {
+				log.Warnf("failed to parse address '%s': %s", addr, err)
+				continue
+			} else if supportsV4 && ipAddr.Is4() {
+				ipv4Addresses = append(ipv4Addresses, addr)
+			} else if supportsV6 && ipAddr.Is6() {
+				ipv6Addresses = append(ipv6Addresses, addr)
+			}
+		}
+	}
+	if len(ipv4Addresses) > 0 {
+		return ipv4Addresses
+	}
+	return ipv6Addresses
 }
 
 // GetTLSModeFromEndpointLabels returns the value of the label
@@ -1384,8 +1472,7 @@ func (ep *IstioEndpoint) Equals(other *IstioEndpoint) bool {
 	}
 
 	// Check things we can directly compare...
-	eq := ep.Address == other.Address &&
-		ep.ServicePortName == other.ServicePortName &&
+	eq := ep.ServicePortName == other.ServicePortName &&
 		ep.LegacyClusterPortKey == other.LegacyClusterPortKey &&
 		ep.ServiceAccount == other.ServiceAccount &&
 		ep.Network == other.Network &&
@@ -1404,6 +1491,9 @@ func (ep *IstioEndpoint) Equals(other *IstioEndpoint) bool {
 	}
 
 	// check everything else
+	if !ep.IsAddrsEqualIstioEndpoint(other) {
+		return false
+	}
 	if !maps.Equal(ep.Labels, other.Labels) {
 		return false
 	}

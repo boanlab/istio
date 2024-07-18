@@ -15,7 +15,6 @@
 package model
 
 import (
-	"fmt"
 	"sort"
 	"sync"
 
@@ -44,7 +43,7 @@ type ShardKey struct {
 }
 
 func (sk ShardKey) String() string {
-	return fmt.Sprintf("%s/%s", sk.Provider, sk.Cluster)
+	return string(sk.Provider) + "/" + string(sk.Cluster) // format: %s/%s
 }
 
 // MarshalText implements the TextMarshaler interface (for json key usage)
@@ -297,7 +296,6 @@ func (e *EndpointIndex) UpdateServiceEndpoints(
 	ep.Lock()
 	defer ep.Unlock()
 	newIstioEndpoints := istioEndpoints
-
 	oldIstioEndpoints := ep.Shards[shard]
 	needPush := false
 	if oldIstioEndpoints == nil {
@@ -315,13 +313,19 @@ func (e *EndpointIndex) UpdateServiceEndpoints(
 		// Add new endpoints only if they are ever ready once to shards
 		// so that full push does not send them from shards.
 		for _, oie := range oldIstioEndpoints {
-			omap[oie.Address] = oie
+			if oie.FirstAddressOrNil() == "" {
+				continue
+			}
+			omap[oie.FirstAddressOrNil()] = oie
 		}
 		for _, nie := range istioEndpoints {
-			nmap[nie.Address] = nie
+			if nie.FirstAddressOrNil() == "" {
+				continue
+			}
+			nmap[nie.FirstAddressOrNil()] = nie
 		}
 		for _, nie := range istioEndpoints {
-			if oie, exists := omap[nie.Address]; exists {
+			if oie, exists := omap[nie.FirstAddressOrNil()]; exists {
 				// If endpoint exists already, we should push if it's changed.
 				// Skip this check if we already decide we need to push to avoid expensive checks
 				if !needPush && !oie.Equals(nie) {
@@ -343,7 +347,7 @@ func (e *EndpointIndex) UpdateServiceEndpoints(
 		// removal so we need to push an update.
 		if !needPush {
 			for _, oie := range oldIstioEndpoints {
-				if _, f := nmap[oie.Address]; !f {
+				if _, f := nmap[oie.FirstAddressOrNil()]; !f {
 					needPush = true
 					break
 				}
