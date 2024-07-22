@@ -400,7 +400,7 @@ func defaultUpstreamCommonTLSContext() *tlsv3.CommonTlsContext {
 	return &tlsv3.CommonTlsContext{
 		TlsParams: &tlsv3.TlsParameters{
 			// if not specified, envoy use TLSv1_2 as default for client.
-			TlsMaximumProtocolVersion: tlsv3.TlsParameters_TLSv1_3,
+			TlsMaximumProtocolVersion: tlsv3.TlsParameters_TLSv1_2,
 			TlsMinimumProtocolVersion: tlsv3.TlsParameters_TLSv1_2,
 		},
 	}
