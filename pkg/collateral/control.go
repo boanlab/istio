@@ -432,19 +432,92 @@ func (g *generator) genFrontMatter(root *cobra.Command, numEntries int) {
 	g.emit("---")
 }
 
+type CustomTextFunc func(cmd string) string
+
+var CustomTextForCmds = map[string]CustomTextFunc{
+	"completion-bash": func(cmd string) string {
+		return fmt.Sprintf(`<p>Generate the autocompletion script for the bash shell.</p>
+<p>This script depends on the 'bash-completion' package.
+If it is not installed already, you can install it via your OS's package manager.</p>
+<p>To load completions in your current shell session:</p>
+<pre class="language-bash"><code>source <(%s completion bash)</code></pre>
+<p>To load completions for every new session, execute once:</p>
+<h4>Linux:</h4>
+<pre class="language-bash"><code>%s completion bash > /etc/bash_completion.d/%s</code></pre>
+<h4>macOS:</h4>
+<pre class="language-bash"><code>%s completion bash > /usr/local/etc/bash_completion.d/%s</code></pre>
+<p>You will need to start a new shell for this setup to take effect.</p>`, cmd, cmd, cmd, cmd, cmd)
+	},
+
+	"completion-fish": func(cmd string) string {
+		return fmt.Sprintf(`<p>Generate the autocompletion script for the fish shell.</p>
+<p>To load completions in your current shell session:</p>
+<pre class="language-bash"><code>%s completion fish | source</code></pre>
+<p>To load completions for every new session, execute once:</p>
+<pre class="language-bash"><code>%s completion bash > ~/.config/fish/completions/%s.fish</code></pre>
+<p>You will need to start a new shell for this setup to take effect.</p>`, cmd, cmd, cmd)
+	},
+
+	"completion-powershell": func(cmd string) string {
+		return fmt.Sprintf(`<p>Generate the autocompletion script for PowerShell.</p>
+<p>To load completions in your current shell session:</p>
+<pre class="language-bash"><code>%s completion powershell | Out-String | Invoke-Expression</code></pre>
+<p>To load completions for every new session, add the output of the above command to your powershell profile.</p>`, cmd)
+	},
+
+	"completion-zsh": func(cmd string) string {
+		return fmt.Sprintf(`<p>Generate the autocompletion script for the zsh shell.</p>
+	<p>If shell completion is not already enabled in your environment you will need to enable it. You can execute the following once:</p>
+	<pre class="language-bash"><code>echo "autoload -U compinit; compinit" >> ~/.zshrc</code></pre>
+	<p>To load completions in your current shell session:</p>
+	<pre class="language-bash"><code>source <(%s completion zsh)</code></pre>
+	<p>To load completions for every new session, execute once:</p>
+	<h4>Linux:</h4>
+	<pre class="language-bash"><code>%s completion zsh > "${fpath[1]}/_%s"</code></pre>
+	<h4>macOS:</h4>
+	<pre class="language-bash"><code>%s completion zsh > $(brew --prefix)/share/zsh/site-functions/_%s</code></pre>
+	<p>You will need to start a new shell for this setup to take effect.</p>`, cmd, cmd, cmd, cmd, cmd)
+	},
+}
+
+func getCustomText(normalizedCmdPath string) (string, bool) {
+	parts := strings.Split(normalizedCmdPath, "-")
+	if len(parts) < 2 {
+		return "", false
+	}
+
+	// extract the completion type, e.g. "completion-fish", "completion-zsh"
+	completionType := strings.Join(parts[len(parts)-2:], "-")
+	// anything before the completion type is the command name (e.g. istioctl, pilot-agent, ...)
+	cmd := strings.Join(parts[:len(parts)-2], "-")
+
+	if textFunc, ok := CustomTextForCmds[completionType]; ok {
+		return textFunc(cmd), true
+	}
+	return "", false
+}
+
 func (g *generator) genCommand(cmd *cobra.Command) {
 	if cmd.Hidden || cmd.Deprecated != "" {
 		return
 	}
 
+	normalizedCmdPath := normalizeID(cmd.CommandPath())
 	if cmd.HasParent() {
-		g.emit("<h2 id=\"", normalizeID(cmd.CommandPath()), "\">", cmd.CommandPath(), "</h2>")
+		g.emit("<h2 id=\"", normalizedCmdPath, "\">", cmd.CommandPath(), "</h2>")
 	}
 
-	if cmd.Long != "" {
-		g.emitText(cmd.Long)
-	} else if cmd.Short != "" {
-		g.emitText(cmd.Short)
+	// Check whether there is a custom text for this command
+	// For now, this only applies to completion commands (bash, zsh, etc.)
+	// as the descriptions for these were coming from non-Istio owned package (cobra).
+	if customText, ok := getCustomText(normalizedCmdPath); ok {
+		g.emit(customText)
+	} else {
+		if cmd.Long != "" {
+			g.emitText(cmd.Long)
+		} else if cmd.Short != "" {
+			g.emitText(cmd.Short)
+		}
 	}
 
 	if cmd.Runnable() {
@@ -643,8 +716,7 @@ func (g *generator) genVars(root *cobra.Command, selectFn SelectEnvFn) {
 
 	g.emit("<h2 id=\"envvars\">Environment variables</h2>")
 
-	g.emit("These environment variables affect the behavior of the <code>", root.Name(), "</code> command. "+
-		"Please use with caution as these environment variables are experimental and can change anytime.")
+	g.emit("These environment variables affect the behavior of the <code>", root.Name(), "</code> command. ")
 
 	g.emit("<table class=\"envvars\">")
 	g.emit("<thead>")
