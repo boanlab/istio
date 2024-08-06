@@ -190,6 +190,8 @@ func applyDownstreamTLSDefaults(tlsDefaults *meshconfig.MeshConfig_TLSConfig, ct
 		tlsParamsOrNew(ctx).EcdhCurves = tlsDefaults.EcdhCurves
 	}
 	if len(tlsDefaults.CipherSuites) > 0 {
+		log.Info("TLS Default 2")
+		log.Infof("TLS D 2 %+v", tlsDefaults.CipherSuites)
 		tlsParamsOrNew(ctx).CipherSuites = tlsDefaults.CipherSuites
 	}
 	if tlsDefaults.MinProtocolVersion != meshconfig.MeshConfig_TLSConfig_TLS_AUTO {
@@ -202,6 +204,8 @@ func applyServerTLSSettings(serverTLSSettings *networking.ServerTLSSettings, ctx
 		tlsParamsOrNew(ctx).TlsMinimumProtocolVersion = convertTLSProtocol(serverTLSSettings.MinProtocolVersion)
 	}
 	if len(serverTLSSettings.CipherSuites) > 0 {
+		log.Info("TLS Default 2")
+                log.Infof("TLS D 2 %+v", serverTLSSettings.CipherSuites)
 		tlsParamsOrNew(ctx).CipherSuites = serverTLSSettings.CipherSuites
 	}
 	if serverTLSSettings.MaxProtocolVersion != networking.ServerTLSSettings_TLS_AUTO {

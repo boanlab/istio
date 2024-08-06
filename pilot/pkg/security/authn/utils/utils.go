@@ -78,6 +78,7 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	}
 
 	ciphers := SupportedCiphers
+	log.Info("TLS Default Called")
 	if mc != nil && mc.MeshMTLS != nil && mc.MeshMTLS.CipherSuites != nil {
 		ciphers = mc.MeshMTLS.CipherSuites
 	}
