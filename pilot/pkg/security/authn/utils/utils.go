@@ -87,7 +87,7 @@ func BuildInboundTLS(mTLSMode model.MutualTLSMode, node *model.Proxy,
 	// when the function returns cipher suites from these annotations
 	annoCipher, err := getCiphersuitesFromAnnoation(node)
 	if err != nil || annoCipher == nil {
-		log.Fatal("Fail to query")
+		log.Debug("No Annotation Cipher Detected")
 	} else {
 		log.Info("Annotation Overriding Triggered")
 		ciphers = annoCipher
