@@ -3,8 +3,8 @@ kind: IstioOperator
 spec:
   profile: default
   hub: docker.io/hochacha
-  tag: 240806_Q1_AES256_to_AES128_v1
+  tag: tls12_1.22.3
   meshConfig:
     meshMTLS:
       cipherSuites:
-      - ECDHE-RSA-AES256-GCM-SHA384 
+        - ECDHE-RSA-AES128-GCM-SHA256
