@@ -1,0 +1,10 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  profile: default
+  hub: docker.io/hochacha
+  tag: tls12_1.22.3
+  meshConfig:
+    tlsDefaults:
+      cipherSuites:
+        - ECDHE-PSK-AES256-CBC-SHA
