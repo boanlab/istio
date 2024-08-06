@@ -1640,3 +1640,1085 @@ PNdWnMLmcKIlwyu8fw==
 2024-08-06T07:50:35.964650Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T07:50:16Z/13
 2024-08-06T07:50:57.273493Z	info	ads	Push debounce stable[51] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.25764ms since last change, 100.257464ms since last push, full=false
 2024-08-06T07:50:57.273574Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T07:50:16Z/13
+2024-08-06T08:11:07.116509Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T08:11:07.117002Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T08:11:07.117154Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "meshMTLS": {
+        "cipherSuites": [
+            "ECDHE-RSA-AES256-GCM-SHA384"
+        ]
+    }
+}
+2024-08-06T08:11:07.122209Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=143358
+2024-08-06T08:11:07.122272Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=143358
+2024-08-06T08:11:07.217603Z	info	ads	Push debounce stable[52] 1 for reason global:1: 100.344381ms since last change, 100.344268ms since last push, full=true
+2024-08-06T08:11:07.217916Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T08:11:07Z/14
+2024-08-06T08:11:07.218674Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:0/11
+2024-08-06T08:11:07.219041Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:0/11
+2024-08-06T08:11:07.219699Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB
+2024-08-06T08:11:07.219990Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:0/6
+2024-08-06T08:11:07.220658Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T08:11:07.220827Z	info	delta	CDS: PUSH for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11
+2024-08-06T08:11:07.220938Z	info	delta	EDS: PUSH for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11
+2024-08-06T08:11:07.221344Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:0/11
+2024-08-06T08:11:07.221448Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T08:11:07.221606Z	info	delta	LDS: PUSH for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB
+2024-08-06T08:11:07.226375Z	info	delta	RDS: PUSH for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T08:12:32.257018Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T08:12:32.257139Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=143519
+2024-08-06T08:12:32.257304Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=143519
+2024-08-06T08:12:32.260106Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T08:12:32.260430Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "meshMTLS": {
+        "cipherSuites": [
+            "ECDHE-RSA-AES128-GCM-SHA256"
+        ]
+    }
+}
+2024-08-06T08:12:32.361032Z	info	ads	Push debounce stable[53] 1 for reason global:1: 100.426833ms since last change, 100.426732ms since last push, full=true
+2024-08-06T08:12:32.361372Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T08:12:32Z/15
+2024-08-06T08:12:32.362064Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T08:12:32.362107Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:0/11
+2024-08-06T08:12:32.362227Z	info	delta	CDS: PUSH for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:6/11
+2024-08-06T08:12:32.363382Z	info	delta	EDS: PUSH for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:1/11
+2024-08-06T08:12:32.362254Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:0/11
+2024-08-06T08:12:32.363540Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T08:12:32.364061Z	info	delta	LDS: PUSH for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB
+2024-08-06T08:12:32.364386Z	info	delta	RDS: PUSH for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:0/6
+2024-08-06T08:12:32.364635Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:9/11
+2024-08-06T08:12:32.365350Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB
+2024-08-06T08:12:32.365668Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T08:13:27.148812Z	info	delta	ADS: "10.244.127.95:40350" istio-ingressgateway-6d79f9d85-hzm97.istio-system-17 terminated
+2024-08-06T08:13:27.445101Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-24
+2024-08-06T08:13:27.445332Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T08:13:27.446095Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:13:27.446896Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T08:17:57.644094Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T08:17:57.648020Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T08:19:47.421582Z	info	delta	ADS: "10.244.127.108:54678" echo-client-59576964db-67gbt.test-22 terminated
+2024-08-06T08:19:47.745524Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-25
+2024-08-06T08:19:47.745732Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T08:19:47.746963Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:19:47.748127Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T08:19:47.748350Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T08:21:03.665912Z	info	delta	ADS: "10.244.127.109:44458" echo-server-7fcbc64997-8gjqm.test-23 terminated
+2024-08-06T08:21:04.180926Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-26
+2024-08-06T08:21:04.181490Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T08:21:04.182395Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:21:04.183666Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T08:21:04.183892Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T08:45:06.557809Z	info	delta	ADS: "10.244.127.95:44122" istio-ingressgateway-6d79f9d85-hzm97.istio-system-24 terminated
+2024-08-06T08:45:06.875853Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-27
+2024-08-06T08:45:06.876466Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T08:45:06.876789Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:45:06.877269Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T08:48:51.671898Z	info	delta	ADS: "10.244.127.108:44474" echo-client-59576964db-67gbt.test-25 terminated
+2024-08-06T08:48:51.780385Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-28
+2024-08-06T08:48:51.780904Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T08:48:51.781219Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:48:51.782431Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T08:48:51.783072Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T08:49:02.496034Z	info	delta	ADS: "10.244.127.109:56336" echo-server-7fcbc64997-8gjqm.test-26 terminated
+2024-08-06T08:49:02.805608Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-29
+2024-08-06T08:49:02.806246Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T08:49:02.806416Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T08:49:02.807671Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T08:49:02.810290Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T09:14:17.414194Z	info	delta	ADS: "10.244.127.95:32880" istio-ingressgateway-6d79f9d85-hzm97.istio-system-27 terminated
+2024-08-06T09:14:17.631920Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-30
+2024-08-06T09:14:17.632338Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T09:14:17.633083Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:14:17.633536Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T09:17:57.644879Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T09:17:57.648904Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T09:19:05.687928Z	info	delta	ADS: "10.244.127.108:53214" echo-client-59576964db-67gbt.test-28 terminated
+2024-08-06T09:19:05.816093Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-31
+2024-08-06T09:19:05.816450Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T09:19:05.818022Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:19:05.818769Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T09:19:05.819408Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T09:21:18.967592Z	info	delta	ADS: "10.244.127.109:55566" echo-server-7fcbc64997-8gjqm.test-29 terminated
+2024-08-06T09:21:19.220571Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-32
+2024-08-06T09:21:19.221231Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T09:21:19.221440Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:21:19.222751Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T09:21:19.222970Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T09:42:26.018007Z	info	delta	ADS: "10.244.127.95:41970" istio-ingressgateway-6d79f9d85-hzm97.istio-system-30 terminated
+2024-08-06T09:42:26.297148Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-33
+2024-08-06T09:42:26.297556Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T09:42:26.298554Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:42:26.302132Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T09:47:01.606888Z	info	delta	ADS: "10.244.127.108:50170" echo-client-59576964db-67gbt.test-31 terminated
+2024-08-06T09:47:01.726086Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-34
+2024-08-06T09:47:01.726833Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T09:47:01.727095Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:47:01.727796Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T09:47:01.729749Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T09:48:39.720544Z	info	delta	ADS: "10.244.127.109:34954" echo-server-7fcbc64997-8gjqm.test-32 terminated
+2024-08-06T09:48:39.754108Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-35
+2024-08-06T09:48:39.755002Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T09:48:39.755493Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T09:48:39.756988Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T09:48:39.757426Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T10:11:11.055640Z	info	delta	ADS: "10.244.127.95:40498" istio-ingressgateway-6d79f9d85-hzm97.istio-system-33 terminated
+2024-08-06T10:11:11.526146Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-36
+2024-08-06T10:11:11.526716Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T10:11:11.527001Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:11:11.527142Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T10:15:52.075490Z	info	delta	ADS: "10.244.127.108:52618" echo-client-59576964db-67gbt.test-34 terminated
+2024-08-06T10:15:52.294710Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-37
+2024-08-06T10:15:52.295112Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T10:15:52.295940Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:15:52.296602Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T10:15:52.297001Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T10:17:57.644265Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T10:17:57.648028Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T10:20:21.788581Z	info	delta	ADS: "10.244.127.109:48072" echo-server-7fcbc64997-8gjqm.test-35 terminated
+2024-08-06T10:20:21.935036Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-38
+2024-08-06T10:20:21.935832Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T10:20:21.936138Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:20:21.938539Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T10:20:21.938670Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T10:41:24.503835Z	info	delta	ADS: "10.244.127.95:50596" istio-ingressgateway-6d79f9d85-hzm97.istio-system-36 terminated
+2024-08-06T10:41:24.875260Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-39
+2024-08-06T10:41:24.875847Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T10:41:24.877002Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:41:24.877598Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T10:46:38.088623Z	info	delta	ADS: "10.244.127.108:52064" echo-client-59576964db-67gbt.test-37 terminated
+2024-08-06T10:46:38.549650Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-40
+2024-08-06T10:46:38.550258Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T10:46:38.550462Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:46:38.551233Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T10:46:38.551376Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T10:52:36.114977Z	info	delta	ADS: "10.244.127.109:46810" echo-server-7fcbc64997-8gjqm.test-38 terminated
+2024-08-06T10:52:36.190271Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-41
+2024-08-06T10:52:36.190809Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T10:52:36.190966Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T10:52:36.192231Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T10:52:36.192427Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T11:10:30.117048Z	info	ads	Push debounce stable[54] 1 for config Secret/kube-system/bootstrap-token-vwczhe: 100.336277ms since last change, 100.336064ms since last push, full=false
+2024-08-06T11:10:30.117521Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T08:12:32Z/15
+2024-08-06T11:10:41.241354Z	info	delta	ADS: "10.244.127.95:59726" istio-ingressgateway-6d79f9d85-hzm97.istio-system-39 terminated
+2024-08-06T11:10:41.427077Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-42
+2024-08-06T11:10:41.427373Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T11:10:41.428373Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:10:41.428498Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T11:16:03.531633Z	info	delta	ADS: "10.244.127.108:43866" echo-client-59576964db-67gbt.test-40 terminated
+2024-08-06T11:16:03.568091Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-43
+2024-08-06T11:16:03.568562Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T11:16:03.569065Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:16:03.570403Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T11:16:03.570695Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T11:17:57.644159Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T11:17:57.648604Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T11:25:11.015758Z	info	delta	ADS: "10.244.127.109:58904" echo-server-7fcbc64997-8gjqm.test-41 terminated
+2024-08-06T11:25:11.465708Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-44
+2024-08-06T11:25:11.466287Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T11:25:11.466616Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:25:11.467341Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T11:25:11.468796Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T11:41:41.034355Z	info	delta	ADS: "10.244.127.95:49134" istio-ingressgateway-6d79f9d85-hzm97.istio-system-42 terminated
+2024-08-06T11:41:41.202124Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-45
+2024-08-06T11:41:41.202645Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T11:41:41.202877Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:41:41.202915Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T11:43:52.067879Z	info	delta	ADS: "10.244.127.108:48714" echo-client-59576964db-67gbt.test-43 terminated
+2024-08-06T11:43:52.273453Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-46
+2024-08-06T11:43:52.274238Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T11:43:52.275624Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:43:52.277424Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T11:43:52.278643Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T11:53:24.561376Z	info	delta	ADS: "10.244.127.109:52192" echo-server-7fcbc64997-8gjqm.test-44 terminated
+2024-08-06T11:53:24.682819Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-47
+2024-08-06T11:53:24.683234Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T11:53:24.683911Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T11:53:24.686170Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T11:53:24.686526Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T12:12:02.508517Z	info	delta	ADS: "10.244.127.95:57686" istio-ingressgateway-6d79f9d85-hzm97.istio-system-45 terminated
+2024-08-06T12:12:02.532362Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-48
+2024-08-06T12:12:02.533171Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:11/11 filtered:0
+2024-08-06T12:12:02.533412Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:12:02.533503Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T12:16:05.885563Z	info	delta	ADS: "10.244.127.108:51288" echo-client-59576964db-67gbt.test-46 terminated
+2024-08-06T12:16:06.292725Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-67gbt.test-49
+2024-08-06T12:16:06.293530Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:11/11 filtered:0
+2024-08-06T12:16:06.294580Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:16:06.298421Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T12:16:06.298532Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T12:17:57.644171Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T12:17:57.648194Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T12:24:10.907215Z	info	delta	ADS: "10.244.127.109:60732" echo-server-7fcbc64997-8gjqm.test-47 terminated
+2024-08-06T12:24:11.094757Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-8gjqm.test-50
+2024-08-06T12:24:11.095424Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:11/11 filtered:0
+2024-08-06T12:24:11.095665Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:24:11.096522Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T12:24:11.096852Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T12:24:34.889912Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T12:24:34.890967Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=171311
+2024-08-06T12:24:34.891855Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T12:24:34.892065Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "meshMTLS": {
+        "cipherSuites": [
+            "ECDHE-ECDSA-AES256-CBC-SHA"
+        ]
+    }
+}
+2024-08-06T12:24:34.893561Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=171311
+2024-08-06T12:24:34.993197Z	info	ads	Push debounce stable[55] 1 for reason global:1: 100.967615ms since last change, 100.967385ms since last push, full=true
+2024-08-06T12:24:34.993584Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T12:24:34Z/16
+2024-08-06T12:24:34.994732Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T12:24:34.994741Z	info	delta	CDS: PUSH for node:echo-client-59576964db-67gbt.test resources:14 removed:0 size:13.2kB cached:0/11
+2024-08-06T12:24:34.995475Z	info	delta	EDS: PUSH for node:echo-client-59576964db-67gbt.test resources:11 removed:0 size:2.1kB empty:0 cached:0/11
+2024-08-06T12:24:34.995629Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.1kB empty:0 cached:0/11
+2024-08-06T12:24:34.995693Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T12:24:34.995899Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:24:34.995938Z	info	delta	LDS: PUSH for node:echo-client-59576964db-67gbt.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:24:34.996091Z	info	delta	RDS: PUSH for node:echo-client-59576964db-67gbt.test resources:6 removed:0 size:3.3kB cached:0/6
+2024-08-06T12:24:34.996212Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11
+2024-08-06T12:24:35.001719Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:24:35.001844Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-8gjqm.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T12:24:35.008368Z	warn	delta	ADS:LDS: ACK ERROR echo-server-7fcbc64997-8gjqm.test-50 Internal:Error adding/updating listener(s) virtualInbound: Failed to initialize cipher suites ECDHE-ECDSA-AES256-CBC-SHA. The following ciphers were rejected when tried individually: ECDHE-ECDSA-AES256-CBC-SHA
+
+2024-08-06T12:24:35.011794Z	warn	delta	ADS:LDS: ACK ERROR echo-client-59576964db-67gbt.test-49 Internal:Error adding/updating listener(s) virtualInbound: Failed to initialize cipher suites ECDHE-ECDSA-AES256-CBC-SHA. The following ciphers were rejected when tried individually: ECDHE-ECDSA-AES256-CBC-SHA
+
+2024-08-06T12:25:29.150196Z	info	ads	Push debounce stable[56] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.149479ms since last change, 100.149376ms since last push, full=false
+2024-08-06T12:25:29.150282Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:24:34Z/16
+2024-08-06T12:25:32.501188Z	info	Sidecar injection request for test/echo-server-7fcbc64997-***** (actual name not yet known)
+2024-08-06T12:25:32.741007Z	info	Sidecar injection request for test/echo-client-59576964db-***** (actual name not yet known)
+2024-08-06T12:25:34.041990Z	info	delta	ADS: "10.244.127.109:32844" echo-server-7fcbc64997-8gjqm.test-50 terminated
+2024-08-06T12:25:34.150767Z	info	delta	ADS: "10.244.127.108:45594" echo-client-59576964db-67gbt.test-49 terminated
+2024-08-06T12:25:35.406392Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-28hsp.test-51
+2024-08-06T12:25:35.406683Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-28hsp.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:25:35.413425Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-28hsp.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11 filtered:0
+2024-08-06T12:25:35.432709Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-28hsp.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:25:35.441601Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-28hsp.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T12:25:35.442485Z	warn	delta	ADS:LDS: ACK ERROR echo-server-7fcbc64997-28hsp.test-51 Internal:Error adding/updating listener(s) virtualInbound: Failed to initialize cipher suites ECDHE-ECDSA-AES256-CBC-SHA. The following ciphers were rejected when tried individually: ECDHE-ECDSA-AES256-CBC-SHA
+
+2024-08-06T12:25:36.831382Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-5fl4b.test-52
+2024-08-06T12:25:36.831675Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-5fl4b.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T12:25:36.839628Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-5fl4b.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11 filtered:0
+2024-08-06T12:25:36.872422Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-5fl4b.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:25:36.880754Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-5fl4b.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T12:25:36.880782Z	warn	delta	ADS:LDS: ACK ERROR echo-client-59576964db-5fl4b.test-52 Internal:Error adding/updating listener(s) virtualInbound: Failed to initialize cipher suites ECDHE-ECDSA-AES256-CBC-SHA. The following ciphers were rejected when tried individually: ECDHE-ECDSA-AES256-CBC-SHA
+
+2024-08-06T12:25:59.637307Z	info	ads	Push debounce stable[57] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.889741ms since last change, 100.889646ms since last push, full=false
+2024-08-06T12:25:59.637376Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:24:34Z/16
+2024-08-06T12:27:16.606430Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T12:27:16.607155Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T12:27:16.607792Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "meshMTLS": {
+        "cipherSuites": [
+            "ECDHE-RSA-AES256-SHA"
+        ]
+    }
+}
+2024-08-06T12:27:16.608452Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=171736
+2024-08-06T12:27:16.608791Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=171736
+2024-08-06T12:27:16.709316Z	info	ads	Push debounce stable[58] 1 for reason global:1: 100.337462ms since last change, 100.337352ms since last push, full=true
+2024-08-06T12:27:16.709636Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:16.710546Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:15 removed:0 size:13.5kB cached:0/11
+2024-08-06T12:27:16.710971Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:11 removed:0 size:2.0kB empty:1 cached:0/11
+2024-08-06T12:27:16.711619Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:16.711889Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:6 removed:0 size:3.3kB cached:0/6
+2024-08-06T12:27:16.712581Z	info	delta	CDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T12:27:16.712646Z	info	delta	EDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:27:16.713517Z	info	delta	LDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:27:16.713924Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T12:27:16.714529Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:1 cached:0/11
+2024-08-06T12:27:16.714564Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T12:27:16.713618Z	info	delta	RDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T12:27:16.725284Z	info	ads	Push Status: {
+    "pilot_eds_no_instances": {
+        "outbound|8888||echo-server.test.svc.cluster.local": {}
+    }
+}
+2024-08-06T12:27:16.885960Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T12:27:16.886129Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:27:16.886655Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:16.887338Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-28hsp.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T12:27:16.992117Z	info	ads	Push debounce stable[59] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.001425ms since last change, 101.001323ms since last push, full=false
+2024-08-06T12:27:16.992172Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:17.110674Z	info	delta	CDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T12:27:17.110764Z	info	delta	EDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:11 removed:0 size:2.1kB empty:0 cached:11/11
+2024-08-06T12:27:17.111162Z	info	delta	LDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:27:17.111271Z	info	delta	RDS: PUSH for node:echo-client-59576964db-5fl4b.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:27:18.946533Z	info	ads	Push debounce stable[60] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.2036ms since last change, 100.203535ms since last push, full=false
+2024-08-06T12:27:18.946583Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:25.033058Z	info	delta	ADS: "10.244.127.111:54000" echo-client-59576964db-5fl4b.test-52 terminated
+2024-08-06T12:27:25.839811Z	info	delta	ADS: "10.244.127.110:53062" echo-server-7fcbc64997-28hsp.test-51 terminated
+2024-08-06T12:27:31.098542Z	info	Sidecar injection request for test/echo-server-7fcbc64997-***** (actual name not yet known)
+2024-08-06T12:27:31.436197Z	info	Sidecar injection request for test/echo-client-59576964db-***** (actual name not yet known)
+2024-08-06T12:27:34.730696Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-2hlwf.test-53
+2024-08-06T12:27:34.731009Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T12:27:34.738094Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11 filtered:0
+2024-08-06T12:27:34.748534Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:27:34.761498Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T12:27:35.907328Z	info	delta	CDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T12:27:35.907410Z	info	delta	EDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11
+2024-08-06T12:27:35.907757Z	info	delta	LDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:13 removed:0 size:25.3kB
+2024-08-06T12:27:35.907842Z	info	delta	RDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:27:36.104020Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-s8tgl.test-54
+2024-08-06T12:27:36.104228Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T12:27:36.111008Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:27:36.238955Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:36.253877Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T12:27:36.905665Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T12:27:36.905825Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:27:36.906459Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:36.907113Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T12:27:37.012267Z	info	ads	Push debounce stable[61] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.636328ms since last change, 100.636232ms since last push, full=false
+2024-08-06T12:27:37.012341Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:39.010334Z	info	ads	Push debounce stable[62] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.273257ms since last change, 100.273026ms since last push, full=false
+2024-08-06T12:27:39.010427Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:40.914560Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:27:40.914715Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:27:40.915362Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:40.915619Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:27:41.026754Z	info	ads	Push debounce stable[63] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.482113ms since last change, 100.482048ms since last push, full=false
+2024-08-06T12:27:41.026811Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:43.033770Z	info	ads	Push debounce stable[64] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.367684ms since last change, 100.367454ms since last push, full=false
+2024-08-06T12:27:43.033906Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:51.325583Z	info	ads	Push debounce stable[65] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.311025ms since last change, 101.310819ms since last push, full=false
+2024-08-06T12:27:51.325695Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:27:59.983836Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:27:59.983925Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:27:59.984371Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:27:59.984484Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:28:00.093903Z	info	ads	Push debounce stable[66] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.265053ms since last change, 100.264821ms since last push, full=false
+2024-08-06T12:28:00.093986Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:28:02.105763Z	info	ads	Push debounce stable[67] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.615224ms since last change, 100.615162ms since last push, full=false
+2024-08-06T12:28:02.105828Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:28:30.085360Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:28:30.085510Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:28:30.086423Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:28:30.086655Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:28:30.198591Z	info	ads	Push debounce stable[68] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.888494ms since last change, 100.888267ms since last push, full=false
+2024-08-06T12:28:30.198672Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:28:32.204337Z	info	ads	Push debounce stable[69] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.102008ms since last change, 101.101904ms since last push, full=false
+2024-08-06T12:28:32.204621Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:29:15.242761Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:29:15.242891Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:29:15.245240Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:29:15.245391Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:29:15.355339Z	info	ads	Push debounce stable[70] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.119847ms since last change, 100.119605ms since last push, full=false
+2024-08-06T12:29:15.355455Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:29:17.351002Z	info	ads	Push debounce stable[71] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.308306ms since last change, 100.308074ms since last push, full=false
+2024-08-06T12:29:17.351147Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:30:49.531510Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:30:49.531668Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:30:49.532451Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:30:49.532651Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:30:49.645607Z	info	ads	Push debounce stable[72] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.468386ms since last change, 100.468122ms since last push, full=false
+2024-08-06T12:30:49.645720Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:30:50.642552Z	info	ads	Push debounce stable[73] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.373145ms since last change, 100.37291ms since last push, full=false
+2024-08-06T12:30:50.642671Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:33:33.028383Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:33:33.028556Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:33:33.029454Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:33:33.029663Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:33:33.141704Z	info	ads	Push debounce stable[74] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.031311ms since last change, 101.031077ms since last push, full=false
+2024-08-06T12:33:33.141994Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:33:34.146653Z	info	ads	Push debounce stable[75] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.235287ms since last change, 100.235046ms since last push, full=false
+2024-08-06T12:33:34.146783Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:38:37.927086Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:38:37.927423Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:38:37.928264Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:38:37.928526Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:38:38.040391Z	info	ads	Push debounce stable[76] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.191857ms since last change, 100.191627ms since last push, full=false
+2024-08-06T12:38:38.040534Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:38:40.050534Z	info	ads	Push debounce stable[77] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.362258ms since last change, 100.362028ms since last push, full=false
+2024-08-06T12:38:40.050804Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:43:13.266361Z	info	delta	ADS: "10.244.127.95:57432" istio-ingressgateway-6d79f9d85-hzm97.istio-system-48 terminated
+2024-08-06T12:43:13.308789Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-55
+2024-08-06T12:43:13.309337Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:10/11 filtered:0
+2024-08-06T12:43:13.309904Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:43:13.310436Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T12:43:51.834434Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:43:51.834625Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:43:51.835444Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:43:51.835631Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:43:51.944058Z	info	ads	Push debounce stable[78] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.699571ms since last change, 100.699337ms since last push, full=false
+2024-08-06T12:43:51.944181Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:43:53.941730Z	info	ads	Push debounce stable[79] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.072097ms since last change, 101.071992ms since last push, full=false
+2024-08-06T12:43:53.941872Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:49:03.744676Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:49:03.744781Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:49:03.745311Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:49:03.745418Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:49:03.854731Z	info	ads	Push debounce stable[80] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.427798ms since last change, 100.427586ms since last push, full=false
+2024-08-06T12:49:03.854865Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:49:05.856973Z	info	ads	Push debounce stable[81] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.579238ms since last change, 100.579145ms since last push, full=false
+2024-08-06T12:49:05.857031Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:54:19.697733Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:54:19.702060Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:54:19.703241Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:54:19.704430Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:54:19.808513Z	info	ads	Push debounce stable[82] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.157556ms since last change, 101.157323ms since last push, full=false
+2024-08-06T12:54:19.808653Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:54:21.822343Z	info	ads	Push debounce stable[83] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.499219ms since last change, 100.498994ms since last push, full=false
+2024-08-06T12:54:21.822449Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:55:18.819482Z	info	delta	ADS: "10.244.127.113:51962" echo-client-59576964db-2hlwf.test-53 terminated
+2024-08-06T12:55:18.981903Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-2hlwf.test-56
+2024-08-06T12:55:18.982303Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:14 removed:0 size:13.2kB cached:10/11 filtered:0
+2024-08-06T12:55:18.984673Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:55:18.988151Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T12:55:18.990359Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-2hlwf.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T12:55:30.759929Z	info	delta	ADS: "10.244.127.112:40112" echo-server-7fcbc64997-s8tgl.test-54 terminated
+2024-08-06T12:55:31.267652Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-s8tgl.test-57
+2024-08-06T12:55:31.267941Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11 filtered:0
+2024-08-06T12:55:31.268730Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T12:55:31.270824Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB filtered:0
+2024-08-06T12:55:31.271017Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T12:59:27.605596Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T12:59:27.605834Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T12:59:27.606459Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T12:59:27.606655Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T12:59:27.717930Z	info	ads	Push debounce stable[84] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.990511ms since last change, 100.990282ms since last push, full=false
+2024-08-06T12:59:27.718170Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T12:59:29.712248Z	info	ads	Push debounce stable[85] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.231523ms since last change, 100.231428ms since last push, full=false
+2024-08-06T12:59:29.712419Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:04:32.510552Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:04:32.511050Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:04:32.511901Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:04:32.512190Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:04:32.622203Z	info	ads	Push debounce stable[86] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.677936ms since last change, 100.67783ms since last push, full=false
+2024-08-06T13:04:32.622265Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:04:33.627125Z	info	ads	Push debounce stable[87] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.264346ms since last change, 100.264117ms since last push, full=false
+2024-08-06T13:04:33.627233Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:09:47.446912Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:09:47.447272Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:09:47.448700Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:09:47.448925Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:09:47.551725Z	info	ads	Push debounce stable[88] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.422417ms since last change, 100.42227ms since last push, full=false
+2024-08-06T13:09:47.551819Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:09:49.562760Z	info	ads	Push debounce stable[89] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.34421ms since last change, 100.343986ms since last push, full=false
+2024-08-06T13:09:49.562959Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:13:12.743324Z	info	delta	ADS: "10.244.127.95:37772" istio-ingressgateway-6d79f9d85-hzm97.istio-system-55 terminated
+2024-08-06T13:13:13.218784Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-58
+2024-08-06T13:13:13.219454Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:10/11 filtered:0
+2024-08-06T13:13:13.219747Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T13:13:13.219921Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T13:14:59.364737Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:14:59.364918Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:14:59.365728Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:14:59.366117Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:14:59.490038Z	info	ads	Push debounce stable[90] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.431023ms since last change, 100.430763ms since last push, full=false
+2024-08-06T13:14:59.490165Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:15:01.499558Z	info	ads	Push debounce stable[91] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.697106ms since last change, 100.696849ms since last push, full=false
+2024-08-06T13:15:01.499666Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T12:27:16Z/17
+2024-08-06T13:17:57.644494Z	info	rootcertrotator	Check and rotate root cert.
+2024-08-06T13:17:57.648566Z	info	rootcertrotator	Root cert is not about to expire, skipping root cert rotation.
+2024-08-06T13:19:28.227915Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T13:19:28.228571Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T13:19:28.228810Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "meshMTLS": {
+        "cipherSuites": [
+            "ECDHE-PSK-AES256-CBC-SHA"
+        ]
+    }
+}
+2024-08-06T13:19:28.229717Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=177790
+2024-08-06T13:19:28.229844Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=177790
+2024-08-06T13:19:28.329018Z	info	ads	Push debounce stable[92] 1 for reason global:1: 100.070848ms since last change, 100.070623ms since last push, full=true
+2024-08-06T13:19:28.329916Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:19:28.331085Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:15 removed:0 size:13.5kB cached:1/11
+2024-08-06T13:19:28.331190Z	info	delta	CDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:14 removed:0 size:13.2kB cached:3/11
+2024-08-06T13:19:28.331125Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T13:19:28.331957Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:11 removed:0 size:2.0kB empty:1 cached:7/11
+2024-08-06T13:19:28.332412Z	info	delta	EDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:11 removed:0 size:2.0kB empty:0 cached:4/11
+2024-08-06T13:19:28.333008Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:1 cached:0/11
+2024-08-06T13:19:28.333337Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T13:19:28.334153Z	info	delta	LDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:13 removed:0 size:25.3kB
+2024-08-06T13:19:28.334210Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:19:28.334484Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-s8tgl.test resources:6 removed:0 size:3.3kB cached:2/6
+2024-08-06T13:19:28.334669Z	info	delta	RDS: PUSH for node:echo-client-59576964db-2hlwf.test resources:6 removed:0 size:3.3kB cached:3/6
+2024-08-06T13:19:35.618175Z	info	Sidecar injection request for test/echo-server-7fcbc64997-***** (actual name not yet known)
+2024-08-06T13:19:35.821681Z	info	Sidecar injection request for test/echo-client-59576964db-***** (actual name not yet known)
+2024-08-06T13:19:36.722168Z	info	ads	Push Status: {
+    "pilot_eds_no_instances": {
+        "outbound|8888||echo-server.test.svc.cluster.local": {}
+    }
+}
+2024-08-06T13:19:37.461260Z	info	delta	ADS: "10.244.127.112:44182" echo-server-7fcbc64997-s8tgl.test-57 terminated
+2024-08-06T13:19:37.526037Z	info	delta	ADS: "10.244.127.113:49376" echo-client-59576964db-2hlwf.test-56 terminated
+2024-08-06T13:19:37.855719Z	info	ads	Push debounce stable[93] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.313457ms since last change, 100.313227ms since last push, full=false
+2024-08-06T13:19:37.855817Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:1 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:19:39.015325Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-5v9tp.test-59
+2024-08-06T13:19:39.015602Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T13:19:39.030059Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11 filtered:0
+2024-08-06T13:19:39.040335Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:13 removed:0 size:25.3kB
+2024-08-06T13:19:39.057863Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T13:19:40.203919Z	info	delta	CDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T13:19:40.204006Z	info	delta	EDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11
+2024-08-06T13:19:40.204498Z	info	delta	LDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:13 removed:0 size:25.3kB
+2024-08-06T13:19:40.204625Z	info	delta	RDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:19:40.538955Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-826g7.test-60
+2024-08-06T13:19:40.539209Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T13:19:40.549726Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T13:19:40.661979Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:19:40.684591Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T13:19:41.175775Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T13:19:41.175839Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:19:41.176205Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:19:41.176269Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T13:19:41.281060Z	info	ads	Push debounce stable[94] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.844384ms since last change, 100.844321ms since last push, full=false
+2024-08-06T13:19:41.281147Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:19:43.286990Z	info	ads	Push debounce stable[95] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.036524ms since last change, 100.03646ms since last push, full=false
+2024-08-06T13:19:43.287043Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:19:45.191946Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:19:45.192133Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:19:45.192817Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:19:45.193035Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:19:45.300750Z	info	ads	Push debounce stable[96] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.142111ms since last change, 100.141896ms since last push, full=false
+2024-08-06T13:19:45.300861Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:19:47.295145Z	info	ads	Push debounce stable[97] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.225821ms since last change, 100.225761ms since last push, full=false
+2024-08-06T13:19:47.295230Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:20:01.247236Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:20:01.247427Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:20:01.248104Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:20:01.248317Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:20:01.355177Z	info	ads	Push debounce stable[98] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.684073ms since last change, 100.683967ms since last push, full=false
+2024-08-06T13:20:01.355258Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:20:03.378706Z	info	ads	Push debounce stable[99] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.602163ms since last change, 100.601952ms since last push, full=false
+2024-08-06T13:20:03.378801Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:20:28.344689Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:20:28.344778Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:20:28.345415Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:20:28.345656Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:20:28.457997Z	info	ads	Push debounce stable[100] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 101.036006ms since last change, 101.035777ms since last push, full=false
+2024-08-06T13:20:28.458220Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:20:30.459656Z	info	ads	Push debounce stable[101] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.360084ms since last change, 100.35985ms since last push, full=false
+2024-08-06T13:20:30.459761Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:21:13.491403Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:21:13.491556Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:21:13.492474Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:21:13.492640Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:21:13.599159Z	info	ads	Push debounce stable[102] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.407411ms since last change, 100.407313ms since last push, full=false
+2024-08-06T13:21:13.599301Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:21:15.604765Z	info	ads	Push debounce stable[103] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.238504ms since last change, 100.23827ms since last push, full=false
+2024-08-06T13:21:15.604867Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:22:48.779940Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:22:48.782026Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:22:48.785160Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:22:48.786145Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:22:48.893762Z	info	ads	Push debounce stable[104] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.350909ms since last change, 100.350678ms since last push, full=false
+2024-08-06T13:22:48.893926Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:22:50.897752Z	info	ads	Push debounce stable[105] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.23672ms since last change, 100.236451ms since last push, full=false
+2024-08-06T13:22:50.897797Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:25:37.275951Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:25:37.276279Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:25:37.277261Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:25:37.277768Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:25:37.392408Z	info	ads	Push debounce stable[106] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.472626ms since last change, 100.472399ms since last push, full=false
+2024-08-06T13:25:37.392617Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:25:38.389196Z	info	ads	Push debounce stable[107] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.083808ms since last change, 100.083581ms since last push, full=false
+2024-08-06T13:25:38.389523Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:30:48.199144Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:30:48.199316Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:30:48.200232Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:30:48.200433Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:30:48.307499Z	info	ads	Push debounce stable[108] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.679541ms since last change, 100.679315ms since last push, full=false
+2024-08-06T13:30:48.307694Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:30:50.302992Z	info	ads	Push debounce stable[109] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.633221ms since last change, 100.633102ms since last push, full=false
+2024-08-06T13:30:50.303068Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:36:04.129698Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:36:04.129917Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:36:04.130801Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:36:04.131052Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:36:04.236810Z	info	ads	Push debounce stable[110] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.4458ms since last change, 100.445657ms since last push, full=false
+2024-08-06T13:36:04.236985Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:36:06.240390Z	info	ads	Push debounce stable[111] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.271319ms since last change, 100.271079ms since last push, full=false
+2024-08-06T13:36:06.240490Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:41:16.049463Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:41:16.049683Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:41:16.050313Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:41:16.050619Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:41:16.158114Z	info	ads	Push debounce stable[112] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.79436ms since last change, 100.794108ms since last push, full=false
+2024-08-06T13:41:16.158250Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:41:18.167905Z	info	ads	Push debounce stable[113] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.357066ms since last change, 100.356817ms since last push, full=false
+2024-08-06T13:41:18.168154Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:43:36.222026Z	info	delta	ADS: "10.244.127.95:33934" istio-ingressgateway-6d79f9d85-hzm97.istio-system-58 terminated
+2024-08-06T13:43:36.444055Z	info	delta	ADS: new delta connection for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system-61
+2024-08-06T13:43:36.444962Z	info	delta	CDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:10/11 filtered:0
+2024-08-06T13:43:36.445978Z	info	delta	EDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T13:43:36.446071Z	info	delta	LDS: PUSH request for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T13:46:19.956439Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:10/11
+2024-08-06T13:46:19.956569Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:46:19.957363Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:31.7kB
+2024-08-06T13:46:19.957547Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:46:20.065854Z	info	ads	Push debounce stable[114] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.156312ms since last change, 100.156039ms since last push, full=false
+2024-08-06T13:46:20.066005Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:46:22.080133Z	info	ads	Push debounce stable[115] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.3494ms since last change, 100.349194ms since last push, full=false
+2024-08-06T13:46:22.080293Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:19:28Z/18
+2024-08-06T13:49:12.740440Z	info	delta	ADS: "10.244.127.115:58898" echo-client-59576964db-5v9tp.test-59 terminated
+2024-08-06T13:49:13.210451Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-5v9tp.test-62
+2024-08-06T13:49:13.210945Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:14 removed:0 size:13.2kB cached:10/11 filtered:0
+2024-08-06T13:49:13.211135Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T13:49:13.211860Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:13 removed:0 size:25.3kB filtered:0
+2024-08-06T13:49:13.212122Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-5v9tp.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T13:49:24.070615Z	info	Loaded MeshNetworks config from Kubernetes API server.
+2024-08-06T13:49:24.071408Z	info	Loaded MeshConfig config from Kubernetes API server.
+2024-08-06T13:49:24.071777Z	info	mesh configuration updated to: {
+    "proxyListenPort": 15001,
+    "proxyInboundListenPort": 15006,
+    "connectTimeout": "10s",
+    "protocolDetectionTimeout": "0s",
+    "ingressClass": "istio",
+    "ingressService": "istio-ingressgateway",
+    "ingressControllerMode": "STRICT",
+    "enableTracing": true,
+    "defaultConfig": {
+        "configPath": "./etc/istio/proxy",
+        "binaryPath": "/usr/local/bin/envoy",
+        "serviceCluster": "istio-proxy",
+        "drainDuration": "45s",
+        "discoveryAddress": "istiod.istio-system.svc:15012",
+        "proxyAdminPort": 15000,
+        "controlPlaneAuthPolicy": "MUTUAL_TLS",
+        "statNameLength": 189,
+        "statusPort": 15020,
+        "terminationDrainDuration": "5s"
+    },
+    "outboundTrafficPolicy": {
+        "mode": "ALLOW_ANY"
+    },
+    "inboundTrafficPolicy": {
+
+    },
+    "enableAutoMtls": true,
+    "trustDomain": "cluster.local",
+    "defaultServiceExportTo": [
+        "*"
+    ],
+    "defaultVirtualServiceExportTo": [
+        "*"
+    ],
+    "defaultDestinationRuleExportTo": [
+        "*"
+    ],
+    "rootNamespace": "istio-system",
+    "localityLbSetting": {
+        "enabled": true
+    },
+    "dnsRefreshRate": "60s",
+    "enablePrometheusMerge": true,
+    "extensionProviders": [
+        {
+            "name": "prometheus",
+            "prometheus": {
+
+            }
+        },
+        {
+            "name": "stackdriver",
+            "stackdriver": {
+
+            }
+        },
+        {
+            "name": "envoy",
+            "envoyFileAccessLog": {
+                "path": "/dev/stdout"
+            }
+        }
+    ],
+    "defaultProviders": {
+        "metrics": [
+            "prometheus"
+        ]
+    },
+    "tlsDefaults": {
+        "cipherSuites": [
+            "ECDHE-ECDSA-CHACHA20-POLY1305"
+        ]
+    }
+}
+2024-08-06T13:49:24.074475Z	info	validationController	successfully updated	name=istio-validator-istio-system fail closed=true resource version=181326
+2024-08-06T13:49:24.074644Z	info	validationController	up-to-date, no change required	name=istio-validator-istio-system fail closed=true resource version=181326
+2024-08-06T13:49:24.172534Z	info	ads	Push debounce stable[116] 1 for reason global:1: 100.342935ms since last change, 100.34278ms since last push, full=true
+2024-08-06T13:49:24.172838Z	info	ads	XDS: Pushing Services:5 ConnectedEndpoints:3 Version:2024-08-06T13:49:24Z/19
+2024-08-06T13:49:24.173890Z	info	delta	CDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:14 removed:0 size:13.2kB cached:4/11
+2024-08-06T13:49:24.174066Z	info	delta	CDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:12 removed:0 size:12.1kB cached:0/11
+2024-08-06T13:49:24.174262Z	info	delta	EDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:11 removed:0 size:2.0kB empty:1 cached:0/11
+2024-08-06T13:49:24.174439Z	info	delta	EDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:11 removed:0 size:2.0kB empty:1 cached:0/11
+2024-08-06T13:49:24.174515Z	info	delta	LDS: PUSH for node:istio-ingressgateway-6d79f9d85-hzm97.istio-system resources:0 removed:0 size:0B
+2024-08-06T13:49:24.174592Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:15 removed:0 size:13.5kB cached:6/11
+2024-08-06T13:49:24.174674Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:49:24.174930Z	info	delta	LDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:13 removed:0 size:25.6kB
+2024-08-06T13:49:24.175185Z	info	delta	RDS: PUSH for node:echo-client-59576964db-5v9tp.test resources:6 removed:0 size:3.3kB cached:0/6
+2024-08-06T13:49:24.175765Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:13 removed:0 size:32.3kB
+2024-08-06T13:49:24.176733Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-826g7.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T13:49:26.722595Z	info	ads	Push Status: {
+    "pilot_eds_no_instances": {
+        "outbound|8888||echo-server.test.svc.cluster.local": {}
+    }
+}
+2024-08-06T13:49:53.016616Z	info	delta	ADS: "10.244.127.114:44220" echo-server-7fcbc64997-826g7.test-60 terminated
+2024-08-06T13:49:53.113018Z	info	delta	ADS: "10.244.127.115:51154" echo-client-59576964db-5v9tp.test-62 terminated
+2024-08-06T13:49:53.389300Z	info	model	Incremental push, service echo-server.test.svc.cluster.local at shard Kubernetes/Kubernetes has no endpoints
+2024-08-06T13:49:53.489579Z	info	ads	Push debounce stable[117] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.229921ms since last change, 100.229817ms since last push, full=false
+2024-08-06T13:49:53.489653Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:1 Version:2024-08-06T13:49:24Z/19
+2024-08-06T13:50:52.618357Z	info	Sidecar injection request for test/echo-server-7fcbc64997-***** (actual name not yet known)
+2024-08-06T13:50:52.935639Z	info	Sidecar injection request for test/echo-client-59576964db-***** (actual name not yet known)
+2024-08-06T13:50:53.871182Z	info	ads	Push debounce stable[118] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.707607ms since last change, 100.707535ms since last push, full=false
+2024-08-06T13:50:53.871290Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:1 Version:2024-08-06T13:49:24Z/19
+2024-08-06T13:50:55.701853Z	info	delta	ADS: new delta connection for node:echo-client-59576964db-kd5j8.test-63
+2024-08-06T13:50:55.702143Z	info	delta	CDS: PUSH request for node:echo-client-59576964db-kd5j8.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T13:50:55.708814Z	info	delta	EDS: PUSH request for node:echo-client-59576964db-kd5j8.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11 filtered:0
+2024-08-06T13:50:55.775023Z	info	delta	LDS: PUSH request for node:echo-client-59576964db-kd5j8.test resources:13 removed:0 size:25.6kB
+2024-08-06T13:50:55.786633Z	info	delta	RDS: PUSH request for node:echo-client-59576964db-kd5j8.test resources:6 removed:0 size:3.3kB cached:5/6 filtered:0
+2024-08-06T13:50:56.758442Z	info	delta	CDS: PUSH for node:echo-client-59576964db-kd5j8.test resources:14 removed:0 size:13.2kB cached:10/11
+2024-08-06T13:50:56.758614Z	info	delta	EDS: PUSH for node:echo-client-59576964db-kd5j8.test resources:11 removed:0 size:2.0kB empty:1 cached:10/11
+2024-08-06T13:50:56.759052Z	info	delta	LDS: PUSH for node:echo-client-59576964db-kd5j8.test resources:13 removed:0 size:25.6kB
+2024-08-06T13:50:56.759201Z	info	delta	RDS: PUSH for node:echo-client-59576964db-kd5j8.test resources:6 removed:0 size:3.3kB cached:5/6
+2024-08-06T13:50:57.037677Z	info	delta	ADS: new delta connection for node:echo-server-7fcbc64997-d6bmq.test-64
+2024-08-06T13:50:57.038005Z	info	delta	CDS: PUSH request for node:echo-server-7fcbc64997-d6bmq.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T13:50:57.046869Z	info	delta	EDS: PUSH request for node:echo-server-7fcbc64997-d6bmq.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11 filtered:0
+2024-08-06T13:50:57.221645Z	info	delta	LDS: PUSH request for node:echo-server-7fcbc64997-d6bmq.test resources:13 removed:0 size:32.3kB
+2024-08-06T13:50:57.238977Z	info	delta	RDS: PUSH request for node:echo-server-7fcbc64997-d6bmq.test resources:6 removed:0 size:3.3kB cached:6/6 filtered:0
+2024-08-06T13:50:58.766794Z	info	delta	CDS: PUSH for node:echo-server-7fcbc64997-d6bmq.test resources:15 removed:0 size:13.5kB cached:11/11
+2024-08-06T13:50:58.766979Z	info	delta	EDS: PUSH for node:echo-server-7fcbc64997-d6bmq.test resources:11 removed:0 size:2.0kB empty:0 cached:11/11
+2024-08-06T13:50:58.767522Z	info	delta	LDS: PUSH for node:echo-server-7fcbc64997-d6bmq.test resources:13 removed:0 size:32.3kB
+2024-08-06T13:50:58.767659Z	info	delta	RDS: PUSH for node:echo-server-7fcbc64997-d6bmq.test resources:6 removed:0 size:3.3kB cached:6/6
+2024-08-06T13:50:58.881633Z	info	ads	Push debounce stable[119] 1 for config ServiceEntry/test/echo-server.test.svc.cluster.local: 100.884596ms since last change, 100.884525ms since last push, full=false
+2024-08-06T13:50:58.881700Z	info	ads	XDS: Incremental Pushing ConnectedEndpoints:3 Version:2024-08-06T13:49:24Z/19
