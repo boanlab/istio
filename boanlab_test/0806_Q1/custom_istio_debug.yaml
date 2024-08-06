@@ -1,0 +1,10 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  profile: default
+  hub: docker.io/hochacha
+  tag: 240806_Q1_AES256_to_AES128_v1
+  meshConfig:
+    meshMTLS:
+      cipherSuites:
+      - ECDHE-RSA-AES256-GCM-SHA384 
